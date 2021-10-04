@@ -1,4 +1,6 @@
 import pygame
+from pygame import sprite
+from pygame.draw import rect
 pygame.init()
 
 win = pygame.display.set_mode((500, 500))
@@ -31,6 +33,9 @@ while run:
         y += vel
 
     win.fill((0, 0, 0))
+    rectangle = sprite.Sprite()
+    rectangle.image("Team04Project/boxCrate.png")
+    rectangle.__init__()
     pygame.draw.rect(win, (255, 0, 0), (x, y, width, height))
     pygame.display.update()
 pygame.quit()
