@@ -28,12 +28,9 @@ moveDown = [pygame.image.load('images\Red_sprite_1.png'),
 pygame.image.load('images\Red_sprite_2.png'), pygame.image.load
 ('images\Red_sprite_3.png')]
 
-<<<<<<< HEAD
 # Starting Red sprite
 standing = pygame.image.load('images\Red_sprite_1.png')
-=======
 pygame.display.set_caption("The Legend of Red Rectangle")
->>>>>>> ff8b84845d04790bde352ee7504e37c823469c91
 
 x = 50
 y = 50
