@@ -1,12 +1,15 @@
 import pygame
 from pygame import sprite
-
+from stats import Stats
 from pygame.draw import rect
+
+
 pygame.init()
 
 win = pygame.display.set_mode((1280, 760))
 
 pygame.display.set_caption("The Legend of the Red Rectangle")
+
 
 
 # Movement
@@ -46,17 +49,34 @@ up = False
 down = False
 walk = 0
 
+GREEN_LEFT = 0
+TOP = 0
+WIDTH = 50
+HEIGHT = 8
+red_left = 50
+
+
 def gameWindow():
     win.fill((0, 0, 0))
+
+    global red_left
+    health_bar = pygame.Surface((WIDTH, HEIGHT))
+    health_bar.fill(pygame.Color("green"), (GREEN_LEFT, TOP, WIDTH, HEIGHT))
+    health_bar.fill(pygame.Color("red"), (red_left, TOP, WIDTH, HEIGHT))
+
+    win.blit(health_bar, (x - 10, y - 20))
+
     global walk
     if walk + 1 >= 12:
         walk = 0
     if right:
         win.blit(moveRight[walk // 4], (x, y))
         walk += 1
+        red_left -= 1
     elif left:
         win.blit(moveLeft[walk // 4], (x, y))
         walk += 1
+        red_left += 1
     elif up:
         win.blit(moveUp[walk // 4], (x, y))
         walk += 1
@@ -65,6 +85,7 @@ def gameWindow():
         walk += 1
     else:
         win.blit(standing, (x, y))
+    
     pygame.display.update()
 
 
