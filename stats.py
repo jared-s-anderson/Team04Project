@@ -1,3 +1,5 @@
+import pygame
+
 class Stats:
     '''
     Class for character health, damage power, and special abilities
@@ -8,7 +10,7 @@ class Stats:
         self.character = character
         self.health
         self.damage_power
-        self.abilities
+        self.abilities = character.abilities
 
     def set_health(self):
         '''
@@ -29,16 +31,7 @@ class Stats:
         '''
         pass
 
-    def set_abilities(self, current_abilities):
-        '''
-        Sets the abilities of the character. Each ability gives the character certain upgrades and advantages. 
-        
-        Each character can have up to three abilities. 
 
-        current_abilities: the character's current abilities. This is used to determine if the character is allowed
-                            more abilities or if they will have to choose to replace one of them with a new ability. 
-        '''
-        pass
 
     def update_health(self, decrease):
         '''
@@ -67,26 +60,13 @@ class Stats:
         '''
         pass
 
-    def update_abilities(self, current_abilities, new_abilities, changes):
-        '''
-        Updates abilities of the character. Similiar to set_abilities.
-        
-        In charge of a few things:
-            - Replacing current abilities with new ones. 
-            - Upgrading abilities 
-            - Modifying current abilities for specific battles
-
-        current_abilities: all of the current character abilities that will need to be updated / replaced.
-        new_abilities: the new abilities that will replace old_abilites
-        changes: all of the updates to the current abilities
-        '''
-        pass
-
     def show_health_bar(self):
         '''
         Displays the characters health bar
         
         '''
+        health_bar = pygame.Surface((300, 35))
+        pygame.draw.rect(pygame.Surface, )
         pass
 
     def show_abilities(self):
