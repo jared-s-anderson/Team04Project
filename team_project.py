@@ -1,6 +1,7 @@
 import pygame
 from pygame import sprite
 
+from pygame.draw import rect
 pygame.init()
 
 win = pygame.display.set_mode((1280, 760))
@@ -9,27 +10,27 @@ pygame.display.set_caption("The Legend of the Red Rectangle")
 
 
 # Movement
-moveRight = [pygame.image.load('images\Red_sprite_7.png'), 
-pygame.image.load('images\Red_sprite_8.png'), pygame.image.load
-('images\Red_sprite_9.png')]
+moveRight = [pygame.image.load('images/Red_sprite_7.png'), 
+pygame.image.load('images/Red_sprite_8.png'), pygame.image.load
+('images/Red_sprite_9.png')]
 
 
-moveLeft = [pygame.image.load('images\Red_sprite_4.png'), 
-pygame.image.load('images\Red_sprite_5.png'), pygame.image.load
-('images\Red_sprite_6.png')]
+moveLeft = [pygame.image.load('images/Red_sprite_4.png'), 
+pygame.image.load('images/Red_sprite_5.png'), pygame.image.load
+('images/Red_sprite_6.png')]
 
 
-moveUp = [pygame.image.load('images\Red_sprite_10.png'), 
-pygame.image.load('images\Red_sprite_11.png'), pygame.image.load
-('images\Red_sprite_12.png')]
+moveUp = [pygame.image.load('images/Red_sprite_10.png'), 
+pygame.image.load('images/Red_sprite_11.png'), pygame.image.load
+('images/Red_sprite_12.png')]
 
 
-moveDown = [pygame.image.load('images\Red_sprite_1.png'), 
-pygame.image.load('images\Red_sprite_2.png'), pygame.image.load
-('images\Red_sprite_3.png')]
+moveDown = [pygame.image.load('images/Red_sprite_1.png'), 
+pygame.image.load('images/Red_sprite_2.png'), pygame.image.load
+('images/Red_sprite_3.png')]
 
 # Starting Red sprite
-standing = pygame.image.load('images\Red_sprite_1.png')
+standing = pygame.image.load('images/Red_sprite_1.png')
 pygame.display.set_caption("The Legend of Red Rectangle")
 
 x = 50
