@@ -30,7 +30,6 @@ pygame.image.load('images\Red_sprite_2.png'), pygame.image.load
 
 # Starting Red sprite
 standing = pygame.image.load('images\Red_sprite_1.png')
-pygame.display.set_caption("The Legend of Red Rectangle")
 
 x = 50
 y = 50
