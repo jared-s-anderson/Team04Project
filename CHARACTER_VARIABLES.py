@@ -1,0 +1,6 @@
+# RED character variables
+RED_WIDTH = 64
+RED_HEIGHT = 64
+RED_VELOCITY = 7
+RED_X = 50
+RED_Y = 50
