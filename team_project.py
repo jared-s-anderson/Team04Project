@@ -1,5 +1,6 @@
 import pygame
 from pygame import sprite
+from boss import Boss
 from stats import Stats
 from pygame.draw import rect
 from character import Character
@@ -13,10 +14,14 @@ win = pygame.display.set_mode((1280, 760))
 pygame.display.set_caption("The Legend of the Red Rectangle")
 
 # Red Character and Stats and Movement
-red = Character(pygame.image.load('images/red_sprite/red_right_1.png'),
+red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
+
+# Hydra Character
+hydra = Boss(pygame.image.load("images/Hydra_sprite/Hydra_1.png"), 
+                HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
 
 # Set up the game window
 def gameWindow():
