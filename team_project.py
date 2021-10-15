@@ -13,10 +13,10 @@ win = pygame.display.set_mode((1280, 760))
 pygame.display.set_caption("The Legend of the Red Rectangle")
 
 # Red Character and Stats and Movement
-red = Character(pygame.image.load('red_sprite/red_right_1.png'),
+red = Character(pygame.image.load('images/red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
 red_stats = Stats(red)
-red.movement_setup("red_sprite", "red")
+red.movement_setup("Red_sprite", "red")
 
 # Set up the game window
 def gameWindow():

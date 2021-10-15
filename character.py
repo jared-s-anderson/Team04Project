@@ -39,21 +39,21 @@ class Character:
             character_name movement number
         '''
         self.character_name = character_name
-        self.move_right = [pygame.image.load(f"{folder_name}/{character_name}_right_{1}.png"), 
-                            pygame.image.load(f'{folder_name}/{character_name}_right_{2}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_right_{3}.png')]
+        self.move_right = [pygame.image.load(f"images/{folder_name}/{character_name}_right_{1}.png"), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_right_{2}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_right_{3}.png')]
 
-        self.move_left = [pygame.image.load(f'{folder_name}/{character_name}_left_{1}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_left_{2}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_left_{3}.png')]
+        self.move_left = [pygame.image.load(f'images/{folder_name}/{character_name}_left_{1}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_left_{2}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_left_{3}.png')]
 
-        self.move_up = [pygame.image.load(f'{folder_name}/{character_name}_up_{1}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_up_{2}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_up_{3}.png')]
+        self.move_up = [pygame.image.load(f'images/{folder_name}/{character_name}_up_{1}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_up_{2}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_up_{3}.png')]
 
-        self.move_down = [pygame.image.load(f'{folder_name}/{character_name}_down_{1}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_down_{2}.png'), 
-                            pygame.image.load(f'{folder_name}/{character_name}_down_{3}.png')]
+        self.move_down = [pygame.image.load(f'images/{folder_name}/{character_name}_down_{1}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_down_{2}.png'), 
+                            pygame.image.load(f'images/{folder_name}/{character_name}_down_{3}.png')]
 
     def move(self, key):
         '''
