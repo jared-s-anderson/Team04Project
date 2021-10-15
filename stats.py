@@ -8,9 +8,10 @@ class Stats:
 
     def __init__(self, character):
         self.character = character
-        self.health
-        self.damage_power
+        self.health = 100
+        self.damage_power = 0
         self.abilities = character.abilities
+        self.damage_left = 50
 
     def set_health(self):
         '''
@@ -60,13 +61,22 @@ class Stats:
         '''
         pass
 
-    def show_health_bar(self):
+    def show_health_bar(self, win, x, y):
         '''
         Displays the characters health bar
         
         '''
-        health_bar = pygame.Surface((300, 35))
-        pygame.draw.rect(pygame.Surface, )
+        GREEN_LEFT = 0
+        TOP = 0
+        WIDTH = 50
+        HEIGHT = 8
+
+        health_bar = pygame.Surface((WIDTH, HEIGHT))
+        health_bar.fill(pygame.Color("green"), (GREEN_LEFT, TOP, WIDTH, HEIGHT))
+        health_bar.fill(pygame.Color("red"), (self.damage_left, TOP, WIDTH, HEIGHT))
+
+        win.blit(health_bar, (x - 10, y - 20))
+
         pass
 
     def show_abilities(self):
