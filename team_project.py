@@ -24,6 +24,7 @@ hydra = Boss(pygame.image.load("images/Hydra_sprite/Hydra_1.png"),
                 HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
 hydra.movement_setup("Hydra_sprite", "Hydra")
 hydra.special_move_setup("Hydra_sprite/Roar", "Hydra_roar")
+hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn")
 
 
 
@@ -33,20 +34,18 @@ i = 0
 def gameWindow():
     global i
 
-    if i >= 29:
+    if i >= 38:
         i = 0
 
     win.fill((0, 0, 0))
 
     red.showCharacter(win)
     red_stats.show_health_bar(win, red.x, red.y)   
-  
     
     hydra.showCharacter(win, i)
 
-
     i += 1
-            
+           
     pygame.display.update()
 
 run = True

@@ -1,5 +1,6 @@
 import pygame
 from  CHARACTER_VARIABLES import *
+import os
 
 class Character:
 
@@ -39,21 +40,19 @@ class Character:
             character_name movement number
         '''
         self.character_name = character_name
-        self.move_right = [pygame.image.load(f"images/{folder_name}/{character_name}_right_{1}.png"), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_right_{2}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_right_{3}.png')]
 
-        self.move_left = [pygame.image.load(f'images/{folder_name}/{character_name}_left_{1}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_left_{2}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_left_{3}.png')]
-
-        self.move_up = [pygame.image.load(f'images/{folder_name}/{character_name}_up_{1}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_up_{2}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_up_{3}.png')]
-
-        self.move_down = [pygame.image.load(f'images/{folder_name}/{character_name}_down_{1}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_down_{2}.png'), 
-                            pygame.image.load(f'images/{folder_name}/{character_name}_down_{3}.png')]
+        # Get all the files in the {folder}
+        files_list = os.listdir(f"images/{folder_name}")
+       
+        for file in files_list:
+            if "right" in file:
+                self.move_right.append(pygame.image.load(f"images/{folder_name}/{file}"))
+            elif "left" in file:
+                self.move_left.append(pygame.image.load(f"images/{folder_name}/{file}"))
+            elif "up" in file:
+                self.move_up.append(pygame.image.load(f"images/{folder_name}/{file}"))
+            elif "down" in file:
+                self.move_down.append(pygame.image.load(f"images/{folder_name}/{file}"))
 
     def move(self, key):
         '''
