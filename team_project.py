@@ -9,7 +9,7 @@ from CHARACTER_VARIABLES import *
 
 pygame.init()
 
-win = pygame.display.set_mode((1280, 760))
+win = pygame.display.set_mode((1280, 760)) #-AD 650 
 
 pygame.display.set_caption("The Legend of the Red Rectangle")
 
@@ -54,15 +54,19 @@ run = True
 while run:
     pygame.time.delay(100)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
     # Get the key pressed from user
     key = pygame.key.get_pressed()
 
-    # Update Character
+    # Quit
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or key [pygame.K_ESCAPE]:
+            run = False
+
+    # Update Character by se nding a bunch of key button states as bools
     red.move(key)
 
+    # Why are we calling this all the way down here?
     gameWindow()
-    
+
+print('Thanks for playing!')    
 pygame.quit()
