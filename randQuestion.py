@@ -19,3 +19,20 @@ def question():
         answer = round(A / B, 1)
         dividedBy = str(' ' + chr(247) + ' ')
         return 'What is the quotient of ' + str(A) + dividedBy + str(B) + ' to the nearest 10th?', answer
+
+def checkSolution(userinput, solution):
+    checkDigit = False
+    
+    for character in userinput:
+        if character.isdigit():
+            checkDigit = True
+        else:
+            checkDigit = False
+
+    if checkDigit:
+        if float(userinput) == solution:
+            print('correct')     
+        else:
+            print('incorect')
+    else:
+        print('Numbers only please!')
