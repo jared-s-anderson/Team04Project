@@ -35,18 +35,17 @@ hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn")
 # which is present in pygame.
 # 2nd parameter is size of the font
 font = pygame.font.Font('freesansbold.ttf', 32)
- 
+
 # create a text surface object,
 # on which text is drawn on it.
-question = question()
+question = question(level)
 text = font.render(question[0], True, TEXT_BLOOD, TEXT_GREY)
-print(question)
  
 # create a rectangular object for the
 # text surface object
 textRect = text.get_rect()
 
-# set the center of the rectangular object.
+# set the center of the text rectangle object.
 textRect.center = (TEXT_X, TEXT_Y)
 
 ###############################################
@@ -58,11 +57,11 @@ user_text = ''
 # create rectangle
 input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
   
-# color_active stores color(lightskyblue3) which
-# gets active when input box is clicked by user
+# color_active stores color which switches
+# to active when input box is clicked by user
 color_active = pygame.Color(INPUT_COLOR_ACTIVE)
   
-# color_passive store color(chartreuse4) which is
+# color_passive stores the default color which is
 # color of input box.
 color_passive = pygame.Color(INPUT_COLOR_PASSIVE)
 color = color_passive
@@ -91,6 +90,7 @@ def gameWindow():
 
 run = True
 active = False
+
 # This loop runs the game.
 while run:
     pygame.time.delay(100)
@@ -106,25 +106,28 @@ while run:
     ######################################################
         
         if event.type == pygame.MOUSEBUTTONDOWN:
-                if input_rect.collidepoint(event.pos):
-                    active = True
-                else:
-                    active = False
+            if input_rect.collidepoint(event.pos):
+                active = True
+            else:
+                active = False
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
-  
-                    # get text input from 0 to -1 i.e. end.
-                    user_text = user_text[:-1]
+                # get text input from 0 to -1 i.e. end.
+                user_text = user_text[:-1]
+
             elif event.key == pygame.K_RETURN:
-                checkSolution(user_text, question[1])
+                result = checkSolution(user_text, question[1])
+                if result == 'Correct!':
+                    level += 1
+                print(result + ' your level is: ' + str(level))
+                user_text = ''
   
             # Unicode standard is used for string
             # formation
             else:
                 user_text += event.unicode
       
-  
         if active:
             color = color_active
         else:
@@ -142,8 +145,6 @@ while run:
     # to the display surface object
     # at the center coordinate.
     win.blit(text, textRect)
-    
-    
 
     ###########################################
   
