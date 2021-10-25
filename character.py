@@ -59,28 +59,28 @@ class Character:
         method that has the character move according to the {key} that was pressed
 
         '''
-        if key[pygame.K_LEFT]:
+        if key[pygame.K_LEFT] and self.x > self.velocity:
             self.x -= self.velocity
             self.left = True
             self.right = False
             self.up = False
             self.down = False
 
-        elif key[pygame.K_RIGHT]:
+        elif key[pygame.K_RIGHT] and self.x  < 1315 - self.width - self.velocity:
             self.x += self.velocity
             self.left = False
             self.right = True
             self.up = False
             self.down = False
 
-        elif key[pygame.K_UP]:
+        elif key[pygame.K_UP] and self.y > self.velocity:
             self.y -= self.velocity
             self.left = False
             self.right = False
             self.up = True
             self.down = False
 
-        elif key[pygame.K_DOWN]:
+        elif key[pygame.K_DOWN] and self.y < 675 - self.width - self.velocity:
             self.y += self.velocity
             self.left = False
             self.right = False

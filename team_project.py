@@ -13,6 +13,8 @@ pygame.init()
 
 win = pygame.display.set_mode((X, Y)) 
 
+bg = pygame.image.load("images/Tiles/map(9x6).jpg")
+
 pygame.display.set_caption(gameName)
 
 # Red Character and Stats and Movement
@@ -73,7 +75,7 @@ i = 0
 # Set up the game window
 def gameWindow():
     global i
-
+    
     if i >= 38:
         i = 0
 
@@ -138,29 +140,32 @@ while run:
 
     # Why are we calling this all the way down here?
     gameWindow()
+    win.blit(bg, (0,0))
+    
 
     ##############################################
  
     # copying the text surface object
     # to the display surface object
     # at the center coordinate.
-    win.blit(text, textRect)
+    #win.blit(text, textRect)
+    
 
     ###########################################
   
     # draw rectangle and argument passed which should
     # be on screen
-    pygame.draw.rect(win, color, input_rect)
+    #pygame.draw.rect(win, color, input_rect)
   
-    text_surface = base_font.render(user_text, True, (255, 255, 255))
+    #text_surface = base_font.render(user_text, True, (255, 255, 255))
       
     # render at position stated in arguments
-    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+    #win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
       
     # set width of textfield so that text cannot get
     # outside of user's text input
     # Origionally set to 100? Why does this exist?
-    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
+    #input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
       
     # display.flip() will update only a portion of the
     # screen to be updated, not the full area
