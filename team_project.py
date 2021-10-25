@@ -4,14 +4,16 @@ from boss import Boss
 from stats import Stats
 from pygame.draw import rect
 from character import Character
+from randQuestion import question, checkSolution
 from CHARACTER_VARIABLES import *
+from GAME_VARIABLES import *
 
 
 pygame.init()
 
-win = pygame.display.set_mode((1280, 760))
+win = pygame.display.set_mode((X, Y)) 
 
-pygame.display.set_caption("The Legend of the Red Rectangle")
+pygame.display.set_caption(gameName)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
@@ -26,7 +28,45 @@ hydra.movement_setup("Hydra_sprite", "Hydra")
 hydra.special_move_setup("Hydra_sprite/Roar", "Hydra_roar")
 hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn")
 
+#####################################################
+ 
+# create a font object.
+# 1st parameter is the font file
+# which is present in pygame.
+# 2nd parameter is size of the font
+font = pygame.font.Font('freesansbold.ttf', 32)
 
+# create a text surface object,
+# on which text is drawn on it.
+question = question(level)
+text = font.render(question[0], True, TEXT_BLOOD, TEXT_GREY)
+ 
+# create a rectangular object for the
+# text surface object
+textRect = text.get_rect()
+
+# set the center of the text rectangle object.
+textRect.center = (TEXT_X, TEXT_Y)
+
+###############################################
+
+# basic font for user typed
+base_font = pygame.font.Font(None, 32)
+user_text = ''
+
+# create rectangle
+input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
+  
+# color_active stores color which switches
+# to active when input box is clicked by user
+color_active = pygame.Color(INPUT_COLOR_ACTIVE)
+  
+# color_passive stores the default color which is
+# color of input box.
+color_passive = pygame.Color(INPUT_COLOR_PASSIVE)
+color = color_passive
+
+#####################################################
 
 i = 0
 
@@ -49,20 +89,84 @@ def gameWindow():
     pygame.display.update()
 
 run = True
+active = False
 
 # This loop runs the game.
 while run:
     pygame.time.delay(100)
 
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            run = False
     # Get the key pressed from user
     key = pygame.key.get_pressed()
 
-    # Update Character
+    # Quit and controls
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or key [pygame.K_ESCAPE]:
+            run = False
+
+    ######################################################
+        
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if input_rect.collidepoint(event.pos):
+                active = True
+            else:
+                active = False
+        
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_BACKSPACE:
+                # get text input from 0 to -1 i.e. end.
+                user_text = user_text[:-1]
+
+            elif event.key == pygame.K_RETURN:
+                result = checkSolution(user_text, question[1])
+                if result == 'Correct!':
+                    level += 1
+                print(result + ' your level is: ' + str(level))
+                user_text = ''
+  
+            # Unicode standard is used for string
+            # formation
+            else:
+                user_text += event.unicode
+      
+        if active:
+            color = color_active
+        else:
+            color = color_passive
+    ######################################################
+    # Update Character by sending a bunch of key button states as bools
     red.move(key)
 
+    # Why are we calling this all the way down here?
     gameWindow()
-    
+
+    ##############################################
+ 
+    # copying the text surface object
+    # to the display surface object
+    # at the center coordinate.
+    win.blit(text, textRect)
+
+    ###########################################
+  
+    # draw rectangle and argument passed which should
+    # be on screen
+    pygame.draw.rect(win, color, input_rect)
+  
+    text_surface = base_font.render(user_text, True, (255, 255, 255))
+      
+    # render at position stated in arguments
+    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+      
+    # set width of textfield so that text cannot get
+    # outside of user's text input
+    # Origionally set to 100? Why does this exist?
+    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
+      
+    # display.flip() will update only a portion of the
+    # screen to be updated, not the full area
+    #pygame.display.flip()
+
+    ##############################################
+    pygame.display.update()
+print('Thanks for playing!')    
 pygame.quit()
