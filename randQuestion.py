@@ -1,4 +1,3 @@
-from GAME_VARIABLES import *
 import random
 
 def question(level):
@@ -39,7 +38,7 @@ def question(level):
         dividedBy = str(' ' + chr(247) + ' ')
         return 'What is the quotient of ' + str(A) + dividedBy + str(B) + ' to the nearest 10th?', answer
 
-def checkSolution(user_text, solution):
+def checkSolution(user_text, solution, cheatAns):
 
     try:
         # check the answer, plus the cheat code is 42

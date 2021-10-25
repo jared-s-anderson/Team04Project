@@ -85,7 +85,25 @@ def gameWindow():
     hydra.showCharacter(win, i)
 
     i += 1
-           
+###################### Interface ##################################
+    # copying the text surface object to the display surface object 
+    # at the center coordinate.
+    win.blit(text, textRect)
+  
+    # draw rectangle and argument passed which should
+    # be on screen
+    pygame.draw.rect(win, color, input_rect)
+  
+    text_surface = base_font.render(user_text, True, (255, 255, 255))
+      
+    # render at position stated in arguments
+    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+      
+    # set width of textfield so that text cannot get outside of user's text input
+    # Origionally set to 100? Why does this exist?
+    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
+
+    # The one and true update
     pygame.display.update()
 
 run = True
@@ -117,7 +135,7 @@ while run:
                 user_text = user_text[:-1]
 
             elif event.key == pygame.K_RETURN:
-                result = checkSolution(user_text, question[1])
+                result = checkSolution(user_text, question[1], cheatAns)
                 if result == 'Correct!':
                     level += 1
                 print(result + ' your level is: ' + str(level))
@@ -136,37 +154,8 @@ while run:
     # Update Character by sending a bunch of key button states as bools
     red.move(key)
 
-    # Why are we calling this all the way down here?
+    # call the game window elements
     gameWindow()
 
-    ##############################################
- 
-    # copying the text surface object
-    # to the display surface object
-    # at the center coordinate.
-    win.blit(text, textRect)
-
-    ###########################################
-  
-    # draw rectangle and argument passed which should
-    # be on screen
-    pygame.draw.rect(win, color, input_rect)
-  
-    text_surface = base_font.render(user_text, True, (255, 255, 255))
-      
-    # render at position stated in arguments
-    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
-      
-    # set width of textfield so that text cannot get
-    # outside of user's text input
-    # Origionally set to 100? Why does this exist?
-    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
-      
-    # display.flip() will update only a portion of the
-    # screen to be updated, not the full area
-    #pygame.display.flip()
-
-    ##############################################
-    pygame.display.update()
 print('Thanks for playing!')    
 pygame.quit()
