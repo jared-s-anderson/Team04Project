@@ -1,11 +1,9 @@
 from GAME_VARIABLES import *
-from os import chdir
 import random
 
 def question(level):
 
-    # Determine the kind of problem
-    # based on your level.
+    # Determine the kind of problem based on your level.
     # If your level is less than 5 you only get addition and subtraction. 
     # When your level is greater than 10 you get 2 digit numbers up to 99.
     sign = 0
@@ -17,7 +15,6 @@ def question(level):
     elif level > 5:
         sign = random.randint(0, 3)
 
-
     if level == 1:
         A = random.randint(0, 9)
         B = random.randint(0, 9)
@@ -28,7 +25,6 @@ def question(level):
         A = random.randint(0, 99)
         B = random.randint(0, 99)
     
-
     if sign == 0:
         answer = A + B
         return 'What is the sum of ' + str(A) + ' + ' + str(B) + '?', answer
@@ -59,5 +55,4 @@ def checkSolution(user_text, solution):
         for character in user_text:
             if not character.isdigit():
                 junk += ("'" + character + "' ")
-
         return 'Error: Numbers only please!\n' + junk + 'are/is not valid!'
