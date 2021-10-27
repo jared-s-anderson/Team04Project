@@ -17,6 +17,9 @@ bg = pygame.image.load('images/Tiles/map(9x6).png')
 bg = pygame.transform.scale(bg, (X, Y))
 pygame.display.set_caption(gameName)
 
+#Set sounds by scene
+sounds(scene, volume)
+
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
