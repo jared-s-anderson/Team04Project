@@ -12,7 +12,8 @@ from GAME_VARIABLES import *
 pygame.init()
 
 win = pygame.display.set_mode((X, Y)) 
-
+bg = pygame.image.load('images/Tiles/map(9x6).png')
+bg = pygame.transform.scale(bg, (X, Y))
 pygame.display.set_caption(gameName)
 
 # Red Character and Stats and Movement
@@ -78,7 +79,7 @@ def gameWindow():
         i = 0
 
     win.fill((0, 0, 0))
-
+    win.blit(bg, (0,0))
     red.showCharacter(win)
     red_stats.show_health_bar(win, red.x, red.y)   
     
