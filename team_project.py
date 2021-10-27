@@ -5,6 +5,7 @@ from stats import Stats
 from pygame.draw import rect
 from character import Character
 from randQuestion import question, checkSolution
+from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 

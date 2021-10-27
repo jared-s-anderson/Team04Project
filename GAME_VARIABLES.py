@@ -4,6 +4,7 @@ Y = 650 #-AD 650 defult 760
 gameName = "The Legend of the Red Rectangle"
 level = 11 # Here is the cheat to set your own level
 cheatAns = 42 # This lets you set a cheat answer
+volume = 0.7
 
 # Text
 TEXT_X = X//2
