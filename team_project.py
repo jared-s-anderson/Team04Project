@@ -27,12 +27,12 @@ red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
 
 # Hydra Character
-hydra = Boss(pygame.image.load("images/Hydra_sprite/Hydra_1.png"), 
+hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
 hydra_stats = Stats(hydra)
-hydra.movement_setup("Hydra_sprite", "Hydra")
-hydra.special_move_setup("Hydra_sprite/Roar", "Hydra_roar")
-hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn")
+hydra.movement_setup("Hydra_boss", "Hydra")
+hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
+hydra.turn_setup("Hydra_boss/Turn", "Hydra_turn")
 
 #####################################################
  
