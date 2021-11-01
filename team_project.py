@@ -99,7 +99,7 @@ def gameWindow():
   
     # draw rectangle and argument passed which should
     # be on screen
-    pygame.draw.rect(win, color, input_rect)
+    rect(win, color, input_rect)
   
     text_surface = base_font.render(user_text, True, (255, 255, 255))
       
@@ -145,7 +145,7 @@ while run:
                 result = checkSolution(user_text, question[1], cheatAns)
                 if result == 'Correct!':
                     level += 1
-                print(result + ' your level is: ' + str(level))
+                print(result + ' your level is: {}'.format(level))
                 user_text = ''
   
             # Unicode standard is used for string
