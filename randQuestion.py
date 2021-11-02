@@ -30,7 +30,7 @@ def question(level):
         return 'What is the sum of ' + str(A) + ' + ' + str(B) + '?', answer
     elif sign == 1:
         answer = A - B
-        return 'What is the diffrence of ' + str(A) + ' - ' + str(B) + '?', answer
+        return 'What is the difference of ' + str(A) + ' - ' + str(B) + '?', answer
     elif sign == 2:
         answer = A * B
         return 'What is the product of ' + str(A) + ' x ' + str(B) + '?', answer

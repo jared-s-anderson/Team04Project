@@ -1,5 +1,5 @@
 # General use variables
-X = 1280
+X = 1280 
 Y = 650 #-AD 650 defult 760
 gameName = "The Legend of the Red Rectangle"
 level = 11 # Here is the cheat to set your own level

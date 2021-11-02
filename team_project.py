@@ -1,6 +1,7 @@
 import pygame
 from pygame import sprite
 from boss import Boss
+from object_finder import ObjectFinder
 from stats import Stats
 from pygame.draw import rect
 from character import Character
@@ -8,27 +9,32 @@ from randQuestion import question, checkSolution
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 
-
 pygame.init()
 
 win = pygame.display.set_mode((X, Y)) 
 
 bg = pygame.image.load("images/Tiles/map(9x6).jpg")
+bg = pygame.transform.scale(bg, (X,Y))
+
+of = ObjectFinder("images/Tiles/map(9x6).jpg")
+object_coordinates = of.find_objects()
 
 pygame.display.set_caption(gameName)
+
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
 red_stats = Stats(red)
-red.movement_setup("Red_sprite", "red")
+red.movement_setup("Red_sprite", "red", object_coordinates)
 
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_sprite/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
+hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_sprite", "Hydra")
 hydra.special_move_setup("Hydra_sprite/Roar", "Hydra_roar")
-hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn")
+hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn") 
 
 #####################################################
  
@@ -72,23 +78,27 @@ color = color_passive
 
 i = 0
 
+
+
 # Set up the game window
 def gameWindow():
+    
     global i
     
     if i >= 38:
         i = 0
 
     win.fill((0, 0, 0))
+    win.blit(bg, (0,0))
 
     red.showCharacter(win)
     red_stats.show_health_bar(win, red.x, red.y)   
     
     hydra.showCharacter(win, i)
+    hydra_stats.show_health_bar(win, hydra.x + 35, hydra.y)
 
     i += 1
            
-    pygame.display.update()
 
 run = True
 active = False
@@ -140,7 +150,8 @@ while run:
 
     # Why are we calling this all the way down here?
     gameWindow()
-    win.blit(bg, (0,0))
+    
+    
     
 
     ##############################################
@@ -148,28 +159,27 @@ while run:
     # copying the text surface object
     # to the display surface object
     # at the center coordinate.
-    #win.blit(text, textRect)
+    win.blit(text, textRect)
     
 
     ###########################################
   
     # draw rectangle and argument passed which should
     # be on screen
-    #pygame.draw.rect(win, color, input_rect)
+    pygame.draw.rect(win, color, input_rect)
   
-    #text_surface = base_font.render(user_text, True, (255, 255, 255))
+    text_surface = base_font.render(user_text, True, (255, 255, 255))
       
     # render at position stated in arguments
-    #win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
       
     # set width of textfield so that text cannot get
     # outside of user's text input
     # Origionally set to 100? Why does this exist?
-    #input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
+    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
       
     # display.flip() will update only a portion of the
     # screen to be updated, not the full area
-    #pygame.display.flip()
 
     ##############################################
     pygame.display.update()

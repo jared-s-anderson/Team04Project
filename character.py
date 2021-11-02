@@ -1,7 +1,12 @@
+from typing import Tuple
 import pygame
 from  CHARACTER_VARIABLES import *
 import os
 
+from object_finder import ObjectFinder
+from OBJECT_VARIABLES import *
+
+c = get_coordinates()
 class Character:
 
     def __init__(self, picture, w, h, v, x, y):
@@ -28,8 +33,9 @@ class Character:
         self.up = False
         self.down = False
         self.walk = 0
+        self.object_coordinates = []
 
-    def movement_setup(self, folder_name, character_name):
+    def movement_setup(self, folder_name, character_name, object_coordinates):
         '''
         folder_name : name of the folder for the character with all of the animation images
             
@@ -40,6 +46,7 @@ class Character:
             character_name movement number
         '''
         self.character_name = character_name
+        self.object_coordinates = object_coordinates
 
         # Get all the files in the {folder}
         files_list = os.listdir(f"images/{folder_name}")
@@ -59,36 +66,53 @@ class Character:
         method that has the character move according to the {key} that was pressed
 
         '''
-        if key[pygame.K_LEFT] and self.x > self.velocity:
+        if tuple((self.x, self.y)) in c:
+            self.left = False
+            self.right = False
+            self.up = False
+            self.down = False
+
+        if key[pygame.K_LEFT] and (self.x > self.velocity) and ([self.x, self.y] not in self.object_coordinates):
             self.x -= self.velocity
             self.left = True
             self.right = False
             self.up = False
             self.down = False
+            print((self.x, self.y), (self.x, self.y) in self.object_coordinates)
 
-        elif key[pygame.K_RIGHT] and self.x  < 1315 - self.width - self.velocity:
+
+        elif key[pygame.K_RIGHT] and (self.x  < 1315 - self.width - self.velocity):# and ((self.x, self.y) not in self.object_coordinates):
             self.x += self.velocity
             self.left = False
             self.right = True
             self.up = False
             self.down = False
+            print(self.x, self.y)
 
-        elif key[pygame.K_UP] and self.y > self.velocity:
+
+        elif key[pygame.K_UP] and (self.y > self.velocity): # and ((self.x, self.y) not in self.object_coordinates):
             self.y -= self.velocity
             self.left = False
             self.right = False
             self.up = True
             self.down = False
+            print(self.x, self.y)
+            print(c)
 
-        elif key[pygame.K_DOWN] and self.y < 675 - self.width - self.velocity:
+
+
+        elif key[pygame.K_DOWN] and (self.y < 675 - self.width - self.velocity):# and ((self.x, self.y) not in self.object_coordinates):
             self.y += self.velocity
             self.left = False
             self.right = False
             self.up = False
             self.down = True
+            print(self.x, self.y)
+
 
         else:
             self.walk = 0
+
 
     def showCharacter(self, win):
         '''
