@@ -5,17 +5,19 @@ from stats import Stats
 from pygame.draw import rect
 from character import Character
 from randQuestion import question, checkSolution
+from interface import interface, gameWindow
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 
 
 pygame.init()
-
-win = pygame.display.set_mode((X, Y)) 
-bg = pygame.image.load('images/Tiles/map(9x6).png')
-bg = pygame.transform.scale(bg, (X, Y))
+# Set the window
+win = pygame.display.set_mode((X, Y))
+# Set the window name
 pygame.display.set_caption(gameName)
+# Set the scene and its dimensions.
+bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
 
 #Set sounds by scene
 sounds(scene, volume)
@@ -37,84 +39,29 @@ hydra.turn_setup("Hydra_boss/Turn", "Hydra_turn")
 #####################################################
  
 # create a font object.
-# 1st parameter is the font file
-# which is present in pygame.
+# 1st parameter is the font file which is present in pygame.
 # 2nd parameter is size of the font
 font = pygame.font.Font('freesansbold.ttf', 32)
 
-# create a text surface object,
-# on which text is drawn on it.
-question = question(level)
-text = font.render(question[0], True, TEXT_BLOOD, TEXT_GREY)
- 
-# create a rectangular object for the
-# text surface object
-textRect = text.get_rect()
-
-# set the center of the text rectangle object.
-textRect.center = (TEXT_X, TEXT_Y)
-
-###############################################
-
 # basic font for user typed
 base_font = pygame.font.Font(None, 32)
+
+# create a text surface object,
+# on which text is drawn.
+question = question(level)
+text = font.render(question[0], True, TEXT_COLOR, TEXT_BACKGROUND)
+levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
+
+# Define the empty user text string for user input
 user_text = ''
 
 # create rectangle
 input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
-  
-# color_active stores color which switches
-# to active when input box is clicked by user
-color_active = pygame.Color(INPUT_COLOR_ACTIVE)
-  
-# color_passive stores the default color which is
-# color of input box.
-color_passive = pygame.Color(INPUT_COLOR_PASSIVE)
-color = color_passive
 
 #####################################################
 
-i = 0
-
-# Set up the game window
-def gameWindow():
-    global i
-
-    if i >= 38:
-        i = 0
-
-    win.fill((0, 0, 0))
-    win.blit(bg, (0,0))
-    red.showCharacter(win)
-    red_stats.show_health_bar(win, red.x, red.y)   
-    
-    hydra.showCharacter(win, i)
-    hydra_stats.show_health_bar(win, hydra.x + 35, hydra.y)
-
-    i += 1
-###################### Interface ##################################
-    # copying the text surface object to the display surface object 
-    # at the center coordinate.
-    win.blit(text, textRect)
-  
-    # draw rectangle and argument passed which should
-    # be on screen
-    rect(win, color, input_rect)
-  
-    text_surface = base_font.render(user_text, True, (255, 255, 255))
-      
-    # render at position stated in arguments
-    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
-      
-    # set width of textfield so that text cannot get outside of user's text input
-    # Origionally set to 100? Why does this exist?
-    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
-
-    # The one and true update
-    pygame.display.update()
-
 run = True
-active = False
+which_color = 0
 
 # This loop runs the game.
 while run:
@@ -127,25 +74,33 @@ while run:
     for event in pygame.event.get():
         if event.type == pygame.QUIT or key [pygame.K_ESCAPE]:
             run = False
-
-    ######################################################
         
         if event.type == pygame.MOUSEBUTTONDOWN:
             if input_rect.collidepoint(event.pos):
-                active = True
+                which_color = 1
             else:
-                active = False
+                which_color = 0
         
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
-                # get text input from 0 to -1 i.e. end.
-                user_text = user_text[:-1]
+                if len(user_text)>0:
+                     if len(user_text)>0:
+                        # get text input from 0 to -1 i.e. end.
+                        user_text = user_text[:-1]
 
             elif event.key == pygame.K_RETURN:
+                #output = 'Incorrect:'
                 result = checkSolution(user_text, question[1], cheatAns)
-                if result == 'Correct!':
+                if result:
+                    # If correct reset the color, increase the level, 
+                    # and rerender the level image.
+                    which_color = 1
+                    #output = 'Correct!'
                     level += 1
-                print(result + ' your level is: {}'.format(level))
+                    levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
+                else:
+                    which_color = 2
+                #print('{} Your level is: {}'.format(output, level))
                 user_text = ''
   
             # Unicode standard is used for string
@@ -153,16 +108,19 @@ while run:
             else:
                 user_text += event.unicode
       
-        if active:
-            color = color_active
+        if which_color == 0:
+            color = pygame.Color(INPUT_COLOR_PASSIVE)
+        elif which_color == 1:
+            color = pygame.Color(INPUT_COLOR_ACTIVE)
         else:
-            color = color_passive
+            color = pygame.Color(INPUT_COLOR_WRONG)
     ######################################################
     # Update Character by sending a bunch of key button states as bools
     red.move(key)
 
     # call the game window elements
-    gameWindow()
+    gameWindow(win, bg, red, red_stats, hydra, hydra_stats)
+    interface(win, rect, text, levelText, input_rect, user_text, color, base_font)
 
 print('Thanks for playing!')    
 pygame.quit()
