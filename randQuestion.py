@@ -1,4 +1,3 @@
-from GAME_VARIABLES import *
 import random
 
 def question(level):
@@ -27,19 +26,18 @@ def question(level):
     
     if sign == 0:
         answer = A + B
-        return 'What is the sum of ' + str(A) + ' + ' + str(B) + '?', answer
+        return 'What is the sum of {} + {}?'.format(A, B), answer
     elif sign == 1:
         answer = A - B
-        return 'What is the difference of ' + str(A) + ' - ' + str(B) + '?', answer
+        return 'What is the difference of {} - {}?'.format(A, B), answer
     elif sign == 2:
         answer = A * B
-        return 'What is the product of ' + str(A) + ' x ' + str(B) + '?', answer
+        return 'What is the product of {} x {}?'.format(A, B), answer
     else:
         answer = round(A / B, 1)
-        dividedBy = str(' ' + chr(247) + ' ')
-        return 'What is the quotient of ' + str(A) + dividedBy + str(B) + ' to the nearest 10th?', answer
+        return 'What is the quotient of {} {} {} to the nearest 10th?'.format(A, chr(247), B), answer
 
-def checkSolution(user_text, solution):
+def checkSolution(user_text, solution, cheatAns):
 
     try:
         # check the answer, plus the cheat code is 42

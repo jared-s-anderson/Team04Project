@@ -78,8 +78,6 @@ class Character:
             self.right = False
             self.up = False
             self.down = False
-            print((self.x, self.y), (self.x, self.y) in self.object_coordinates)
-
 
         elif key[pygame.K_RIGHT] and (self.x  < 1315 - self.width - self.velocity):# and ((self.x, self.y) not in self.object_coordinates):
             self.x += self.velocity
@@ -87,8 +85,6 @@ class Character:
             self.right = True
             self.up = False
             self.down = False
-            print(self.x, self.y)
-
 
         elif key[pygame.K_UP] and (self.y > self.velocity): # and ((self.x, self.y) not in self.object_coordinates):
             self.y -= self.velocity
@@ -96,10 +92,6 @@ class Character:
             self.right = False
             self.up = True
             self.down = False
-            print(self.x, self.y)
-            print(c)
-
-
 
         elif key[pygame.K_DOWN] and (self.y < 675 - self.width - self.velocity):# and ((self.x, self.y) not in self.object_coordinates):
             self.y += self.velocity
@@ -107,8 +99,6 @@ class Character:
             self.right = False
             self.up = False
             self.down = True
-            print(self.x, self.y)
-
 
         else:
             self.walk = 0

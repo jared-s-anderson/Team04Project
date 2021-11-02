@@ -12,6 +12,10 @@ This program was coded in VScode with various extensions including the Microsoft
 ### Additional libraries
 * random
 
+### Asset Credits
+* [LuizMelo](https://luizmelo.itch.io/monsters-creatures-fantasy)
+* [Heroes of Might and Magic 3](https://www.spriters-resource.com/pc_computer/heroes3/sheet/44993/) ripped by [Cyrus Annihilator](https://www.spriters-resource.com/submitter/Cyrus+Annihilator/)
+
 ## Useful Websites
 
 * [w3schools.com](https://www.w3schools.com/python/)

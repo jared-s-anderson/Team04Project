@@ -6,35 +6,33 @@ from stats import Stats
 from pygame.draw import rect
 from character import Character
 from randQuestion import question, checkSolution
+from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 
 pygame.init()
 
 win = pygame.display.set_mode((X, Y)) 
-
-bg = pygame.image.load("images/Tiles/map(9x6).jpg")
-bg = pygame.transform.scale(bg, (X,Y))
-
-of = ObjectFinder("images/Tiles/map(9x6).jpg")
-object_coordinates = of.find_objects()
-
+bg = pygame.image.load('images/Tiles/map(9x6).png')
+bg = pygame.transform.scale(bg, (X, Y))
 pygame.display.set_caption(gameName)
 
+#Set sounds by scene
+sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
 red_stats = Stats(red)
-red.movement_setup("Red_sprite", "red", object_coordinates)
+red.movement_setup("Red_sprite", "red")
 
 # Hydra Character
-hydra = Boss(pygame.image.load("images/Hydra_sprite/Hydra_1.png"), 
+hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
 hydra_stats = Stats(hydra)
-hydra.movement_setup("Hydra_sprite", "Hydra")
-hydra.special_move_setup("Hydra_sprite/Roar", "Hydra_roar")
-hydra.turn_setup("Hydra_sprite/Turn", "Hydra_turn") 
+hydra.movement_setup("Hydra_boss", "Hydra")
+hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
+hydra.turn_setup("Hydra_boss/Turn", "Hydra_turn")
 
 #####################################################
  
@@ -90,7 +88,6 @@ def gameWindow():
 
     win.fill((0, 0, 0))
     win.blit(bg, (0,0))
-
     red.showCharacter(win)
     red_stats.show_health_bar(win, red.x, red.y)   
     
@@ -98,7 +95,26 @@ def gameWindow():
     hydra_stats.show_health_bar(win, hydra.x + 35, hydra.y)
 
     i += 1
-           
+###################### Interface ##################################
+    # copying the text surface object to the display surface object 
+    # at the center coordinate.
+    win.blit(text, textRect)
+  
+    # draw rectangle and argument passed which should
+    # be on screen
+    rect(win, color, input_rect)
+  
+    text_surface = base_font.render(user_text, True, (255, 255, 255))
+      
+    # render at position stated in arguments
+    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
+      
+    # set width of textfield so that text cannot get outside of user's text input
+    # Origionally set to 100? Why does this exist?
+    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
+
+    # The one and true update
+    pygame.display.update()
 
 run = True
 active = False
@@ -129,10 +145,10 @@ while run:
                 user_text = user_text[:-1]
 
             elif event.key == pygame.K_RETURN:
-                result = checkSolution(user_text, question[1])
+                result = checkSolution(user_text, question[1], cheatAns)
                 if result == 'Correct!':
                     level += 1
-                print(result + ' your level is: ' + str(level))
+                print(result + ' your level is: {}'.format(level))
                 user_text = ''
   
             # Unicode standard is used for string
@@ -148,40 +164,11 @@ while run:
     # Update Character by sending a bunch of key button states as bools
     red.move(key)
 
-    # Why are we calling this all the way down here?
+    # call the game window elements
     gameWindow()
     
     
     
 
-    ##############################################
- 
-    # copying the text surface object
-    # to the display surface object
-    # at the center coordinate.
-    win.blit(text, textRect)
-    
-
-    ###########################################
-  
-    # draw rectangle and argument passed which should
-    # be on screen
-    pygame.draw.rect(win, color, input_rect)
-  
-    text_surface = base_font.render(user_text, True, (255, 255, 255))
-      
-    # render at position stated in arguments
-    win.blit(text_surface, (input_rect.x+5, input_rect.y+5))
-      
-    # set width of textfield so that text cannot get
-    # outside of user's text input
-    # Origionally set to 100? Why does this exist?
-    input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
-      
-    # display.flip() will update only a portion of the
-    # screen to be updated, not the full area
-
-    ##############################################
-    pygame.display.update()
 print('Thanks for playing!')    
 pygame.quit()

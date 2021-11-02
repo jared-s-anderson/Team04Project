@@ -5,6 +5,10 @@ gameName = "The Legend of the Red Rectangle"
 level = 11 # Here is the cheat to set your own level
 cheatAns = 42 # This lets you set a cheat answer
 
+# Sound settings
+volume = 0.7
+scene = 'hydra'
+
 # Text
 TEXT_X = X//2
 TEXT_Y = Y//15
