@@ -42,15 +42,18 @@ def checkSolution(user_text, solution, cheatAns):
     try:
         # check the answer, plus the cheat code is 42
         if float(user_text) == solution or float(user_text) == cheatAns:
-            return 'Correct!'
+            return True
         else:
-            return 'Incorect:'
+            return False
     except:
         # In the event converting user_text to a float fails
         # (for example if its not numbers) parse out the problematic
         # characters.
+        if user_text == "":
+            return 'Error: Please enter your answer in the box!'
         junk = ''
         for character in user_text:
             if not character.isdigit():
+                #user_text.replace(character, '') Future project to try and sanitize non-digit characters
                 junk += ("'" + character + "' ")
-        return 'Error: Numbers only please!\n' + junk + 'are/is not valid!'
+        return 'Error: Numbers only please!\n{}are/is not valid!'.format(junk)
