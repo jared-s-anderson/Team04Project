@@ -107,6 +107,7 @@ while run:
             # formation
             else:
                 user_text += event.unicode
+                which_color = 1
       
         if which_color == 0:
             color = pygame.Color(INPUT_COLOR_PASSIVE)
