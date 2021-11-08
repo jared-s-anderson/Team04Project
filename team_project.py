@@ -2,7 +2,7 @@ import pygame
 #from pygame import sprite
 from boss import Boss
 from enemy import Enemy
-#from object_finder import ObjectFinder
+from object_finder import ObjectFinder
 from stats import Stats
 from pygame.draw import rect
 from character import Character
