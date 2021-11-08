@@ -1,6 +1,7 @@
 import pygame
 from pygame import sprite
 from boss import Boss
+from enemy import Enemy
 from object_finder import ObjectFinder
 from stats import Stats
 from pygame.draw import rect
@@ -36,11 +37,12 @@ hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
 hydra.turn_setup("Hydra_boss/Turn", "Hydra_turn")
 
 # Eye Character 
-eye = Character(pygame.image.load("images/Flying_eye/eye1.png"), RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
-eye.movement_setup("Flying_eye", "eye")
+eye = Enemy(pygame.image.load("images/Flying_eye/eye1.png"), RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
+eye.movement_setup("Flying_eye")
+eye.rect.update(EYE_X, EYE_Y, EYE_WIDTH, EYE_HEIGHT)
 
 
-sprite_group = pygame.sprite.Group(red, hydra)
+sprite_group = pygame.sprite.Group(red, hydra, eye)
 #####################################################
  
 # create a font object.
@@ -174,6 +176,7 @@ while run:
 
     red.draw()
 
+    eye.draw()
 
     
 
