@@ -1,6 +1,7 @@
 import pygame
 from pygame import sprite
 from boss import Boss
+from object_finder import ObjectFinder
 from stats import Stats
 from pygame.draw import rect
 from character import Character
@@ -8,7 +9,6 @@ from randQuestion import question, checkSolution
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
-
 
 pygame.init()
 
@@ -22,18 +22,25 @@ sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
-                RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
+                RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
 
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
-                HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
+                HYDRA_WIDTH, HYDRA_HEIGHT)
+hydra.rect.update(200, 50, HYDRA_WIDTH, HYDRA_HEIGHT)
 hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_boss", "Hydra")
 hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
 hydra.turn_setup("Hydra_boss/Turn", "Hydra_turn")
 
+# Eye Character 
+eye = Character(pygame.image.load("images/Flying_eye/eye1.png"), RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
+eye.movement_setup("Flying_eye", "eye")
+
+
+sprite_group = pygame.sprite.Group(red, hydra)
 #####################################################
  
 # create a font object.
@@ -76,20 +83,23 @@ color = color_passive
 
 i = 0
 
+
+
 # Set up the game window
 def gameWindow():
+    
     global i
-
+    
     if i >= 38:
         i = 0
 
     win.fill((0, 0, 0))
     win.blit(bg, (0,0))
-    red.showCharacter(win)
-    red_stats.show_health_bar(win, red.x, red.y)   
     
+    red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
+    sprite_group.draw(win)
     hydra.showCharacter(win, i)
-    hydra_stats.show_health_bar(win, hydra.x + 35, hydra.y)
+    hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
 
     i += 1
 ###################### Interface ##################################
@@ -159,10 +169,19 @@ while run:
             color = color_passive
     ######################################################
     # Update Character by sending a bunch of key button states as bools
-    red.move(key)
+ 
+    red.update(key, hydra)
+
+    red.draw()
+
+
+    
 
     # call the game window elements
     gameWindow()
+    
+    
+    
 
 print('Thanks for playing!')    
 pygame.quit()
