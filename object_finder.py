@@ -5,8 +5,6 @@
 
 from GAME_VARIABLES import X, Y
 
-
-
 class ObjectFinder:
     def __init__(self, image): 
         self.objects = {}

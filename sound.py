@@ -1,8 +1,6 @@
 from pygame import mixer
 
 def sounds(scene, volume):
-    # Starting the mixer
-    mixer.init()
   
     if scene == 'hydra':
         # Loading the song

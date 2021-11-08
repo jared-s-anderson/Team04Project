@@ -1,8 +1,8 @@
-from typing import Tuple
+#from typing import Tuple
 import pygame
 from  CHARACTER_VARIABLES import *
 import os
-from object_finder import ObjectFinder
+#from object_finder import ObjectFinder
 from OBJECT_VARIABLES import *
 
 class Character(pygame.sprite.Sprite):
