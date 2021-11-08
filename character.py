@@ -1,22 +1,26 @@
+from typing import Tuple
 import pygame
 from  CHARACTER_VARIABLES import *
 import os
+from object_finder import ObjectFinder
+from OBJECT_VARIABLES import *
 
-class Character:
+class Character(pygame.sprite.Sprite):
+    def __init__(self, picture, w, h, v):
+        super().__init__()
 
-    def __init__(self, picture, w, h, v, x, y):
-
+        self.image = picture.convert_alpha()
+        self.rect = self.image.get_rect()
+        self.index = 0
+        
         # Character attributes
         self.character_name = ""
-        self.x = x
-        self.y = y
         self.width = w
         self.height = h
         self.velocity = v
         self.abilities = []
     
         # Animation attributes
-        self.standing = picture
         self.move_right = []
         self.move_left = [] 
         self.move_up = []
@@ -46,67 +50,57 @@ class Character:
        
         for file in files_list:
             if "right" in file:
-                self.move_right.append(pygame.image.load(f"images/{folder_name}/{file}"))
+                self.move_right.append(pygame.image.load(f"images/{folder_name}/{file}").convert_alpha())
             elif "left" in file:
-                self.move_left.append(pygame.image.load(f"images/{folder_name}/{file}"))
+                self.move_left.append(pygame.image.load(f"images/{folder_name}/{file}").convert_alpha())
             elif "up" in file:
-                self.move_up.append(pygame.image.load(f"images/{folder_name}/{file}"))
+                self.move_up.append(pygame.image.load(f"images/{folder_name}/{file}").convert_alpha())
             elif "down" in file:
-                self.move_down.append(pygame.image.load(f"images/{folder_name}/{file}"))
+                self.move_down.append(pygame.image.load(f"images/{folder_name}/{file}").convert_alpha())
 
-    def move(self, key):
+    def update(self, key, other):
         '''
         method that has the character move according to the {key} that was pressed
 
         '''
-        if key[pygame.K_LEFT] and self.x > self.velocity:
-            self.x -= self.velocity
+        self.left = False
+        self.right = False
+        self.up = False
+        self.down = False
+
+        if pygame.sprite.collide_rect(self, other):
+            return
+        if key[pygame.K_LEFT] and (self.rect.x > self.velocity):# and ([self.x, self.y] not in self.object_coordinates):
             self.left = True
-            self.right = False
-            self.up = False
-            self.down = False
+            self.rect = self.rect.move(-self.velocity, 0)
 
-        elif key[pygame.K_RIGHT] and self.x  < 1315 - self.width - self.velocity:
-            self.x += self.velocity
-            self.left = False
+        elif key[pygame.K_RIGHT] and (self.rect.x  < 1315 - self.width - self.velocity):
             self.right = True
-            self.up = False
-            self.down = False
+            self.rect = self.rect.move(self.velocity, 0)
 
-        elif key[pygame.K_UP] and self.y > self.velocity:
-            self.y -= self.velocity
-            self.left = False
-            self.right = False
+        elif key[pygame.K_UP] and (self.rect.y > self.velocity):
             self.up = True
-            self.down = False
-
-        elif key[pygame.K_DOWN] and self.y < 675 - self.width - self.velocity:
-            self.y += self.velocity
-            self.left = False
-            self.right = False
-            self.up = False
+            self.rect = self.rect.move(0, -self.velocity)
+            
+        elif key[pygame.K_DOWN] and (self.rect.y < 675 - self.width - self.velocity):
             self.down = True
+            self.rect = self.rect.move(0, self.velocity)
 
-        else:
-            self.walk = 0
-
-    def showCharacter(self, win):
+    def draw(self):
         '''
         Displays the character on the screen
         '''
-        if self.walk + 1 >= 12:
-            self.walk = 0
+        if self.index >= len(self.move_right):
+            self.index = 0
         if self.right:
-            win.blit(self.move_right[self.walk // 4], (self.x, self.y))
-            self.walk += 1
+            self.image = self.move_right[self.index].convert_alpha()
+            self.index += 1
         elif self.left:
-            win.blit(self.move_left[self.walk // 4], (self.x, self.y))
-            self.walk += 1
+            self.image = self.move_left[self.index].convert_alpha()
+            self.index += 1
         elif self.up:
-            win.blit(self.move_up[self.walk // 4], (self.x, self.y))
-            self.walk += 1
+            self.image = self.move_up[self.index].convert_alpha()
+            self.index += 1
         elif self.down:
-            win.blit(self.move_down[self.walk // 4], (self.x, self.y))
-            self.walk += 1
-        else:
-            win.blit(self.standing, (self.x, self.y))
+            self.image = self.move_down[self.index].convert_alpha()
+            self.index += 1

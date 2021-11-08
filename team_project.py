@@ -1,6 +1,8 @@
 import pygame
 from pygame import sprite
 from boss import Boss
+from enemy import Enemy
+from object_finder import ObjectFinder
 from stats import Stats
 from pygame.draw import rect
 from character import Character
@@ -9,7 +11,6 @@ from interface import interface, gameWindow
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
-
 
 pygame.init()
 # Set the window
@@ -24,18 +25,26 @@ sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
-                RED_WIDTH, RED_HEIGHT, RED_VELOCITY, RED_X, RED_Y)
+                RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
 
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
-                HYDRA_WIDTH, HYDRA_HEIGHT, HYDRA_X, HYDRA_Y)
+                HYDRA_WIDTH, HYDRA_HEIGHT)
+hydra.rect.update(200, 50, HYDRA_WIDTH, HYDRA_HEIGHT)
 hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_boss", "Hydra")
 hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
 hydra.turn_setup("Hydra_boss/Turn", "Hydra_turn")
 
+# Eye Character 
+eye = Enemy(pygame.image.load("images/Flying_eye/eye1.png"), RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
+eye.movement_setup("Flying_eye")
+eye.rect.update(EYE_X, EYE_Y, EYE_WIDTH, EYE_HEIGHT)
+
+
+sprite_group = pygame.sprite.Group(red, hydra, eye)
 #####################################################
  
 # create a font object.
@@ -118,7 +127,14 @@ while run:
             print('which_color is invalid!')
     ######################################################
     # Update Character by sending a bunch of key button states as bools
-    red.move(key)
+ 
+    red.update(key, hydra)
+
+    red.draw()
+
+    eye.draw()
+
+    
 
     # call the game window elements
     gameWindow(win, bg, red, red_stats, hydra, hydra_stats)
