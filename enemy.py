@@ -35,6 +35,7 @@ class Enemy(Character):
             self.image_list.append(pygame.image.load(f"images/{folder_name}/{file}").convert_alpha())
         
         print(self.image_list)
+        
     def draw(self):
         if self.index >= len(self.image_list):
             self.index = 0
