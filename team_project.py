@@ -137,7 +137,7 @@ while run:
     
 
     # call the game window elements
-    gameWindow(win, bg, red, red_stats, hydra, hydra_stats)
+    gameWindow(win, bg, red, red_stats, hydra, hydra_stats, sprite_group)
     interface(win, rect, text, levelText, input_rect, user_text, color, base_font)
 
 print('Thanks for playing!')    

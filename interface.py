@@ -2,7 +2,7 @@ from GAME_VARIABLES import *
 import pygame
 
 # Set up the game window
-def gameWindow(win, bg, red, red_stats, hydra, hydra_stats):
+def gameWindow(win, bg, red, red_stats, hydra, hydra_stats, sprite_group):
     i = 0
 
     if i >= 38:
@@ -10,11 +10,11 @@ def gameWindow(win, bg, red, red_stats, hydra, hydra_stats):
 
     win.fill((0, 0, 0))
     win.blit(bg, (0,0))
-    red.showCharacter(win)
-    red_stats.show_health_bar(win, red.x, red.y)   
-    
+
+    red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
+    sprite_group.draw(win)
     hydra.showCharacter(win, i)
-    hydra_stats.show_health_bar(win, hydra.x + 35, hydra.y)
+    hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
 
     i += 1
 
