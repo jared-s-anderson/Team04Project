@@ -112,8 +112,10 @@ while run:
             color = pygame.Color(INPUT_COLOR_PASSIVE)
         elif which_color == 1:
             color = pygame.Color(INPUT_COLOR_ACTIVE)
-        else:
+        elif which_color == 2:
             color = pygame.Color(INPUT_COLOR_WRONG)
+        else:
+            print('which_color is invalid!')
     ######################################################
     # Update Character by sending a bunch of key button states as bools
     red.move(key)
