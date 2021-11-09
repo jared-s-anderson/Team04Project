@@ -56,7 +56,7 @@ mushroom.rect.update(MUSHROOM_X, MUSHROOM_Y, MUSHROOM_WIDTH, MUSHROOM_HEIGHT)
 
 # Skeleton Character
 skeleton = Enemy(pygame.image.load("images/Skeleton/skeleton1.png"), SKELETON_WIDTH, SKELETON_HEIGHT, SKELETON_VELOCITY)
-skeleton_stasts = Stats(skeleton)
+skeleton_stats = Stats(skeleton)
 skeleton.movement_setup("Skeleton")
 skeleton.rect.update(SKELETON_X, SKELETON_Y, SKELETON_WIDTH, SKELETON_HEIGHT)
 
@@ -123,7 +123,7 @@ def gameWindow():
     eye_stats.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
     goblin_stats.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
     mushroom_stats.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
-    skeleton_stasts.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    skeleton_stats.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
 
     i += 1
 ###################### Interface ##################################
