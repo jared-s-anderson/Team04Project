@@ -1,4 +1,4 @@
-from typing import Tuple
+#from typing import Tuple
 import pygame
 from  CHARACTER_VARIABLES import *
 import os

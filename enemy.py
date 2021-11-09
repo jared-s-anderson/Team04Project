@@ -11,7 +11,6 @@ class Enemy(Character):
         #self.image = picture.convert()
         #self.rect = self.image.get_rect()
         #self.index = 0
-        
 
     def follow_player(self, character):
         x, y = character.rect.x - self.rect.x, character.rect.x - self.rect.y

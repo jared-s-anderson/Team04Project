@@ -1,16 +1,14 @@
-from io import BytesIO
-import PIL
-from PIL import Image
-import math
+#from io import BytesIO
+#import PIL
+#from PIL import Image
+#import math
 
 from GAME_VARIABLES import X, Y
-
-
 
 class ObjectFinder:
     def __init__(self, image): 
         self.objects = {}
-        self.image = Image.open((image))
+        #self.image = Image.open((image))
     
     def find_objects(self):
         coordinates = []
