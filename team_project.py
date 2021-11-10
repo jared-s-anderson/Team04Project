@@ -7,7 +7,7 @@ from stats import Stats
 from pygame.draw import rect
 from character import Character
 from randQuestion import question, checkSolution
-from interface import interface, gameWindow
+from interface import interface
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
