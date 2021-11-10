@@ -116,7 +116,7 @@ def gameWindow():
 ###################### Interface ##################################
     # copying the text surface object to the display surface object 
     # at the center coordinate.
-    win.blit(text, textRect)
+    textRect = text.get_rect()
   
     # draw rectangle and argument passed which should
     # be on screen
@@ -132,8 +132,6 @@ def gameWindow():
     input_rect.w = max(INPUT_WIDTH, text_surface.get_width()+10)
 
     # The one and true update
-    pygame.display.update()
-
 
 run = True
 which_color = 0
