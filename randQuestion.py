@@ -40,8 +40,13 @@ def question(level):
 def checkSolution(user_text, solution, cheatAns):
 
     try:
-        # check the answer, plus the cheat code is 42
-        if float(user_text) == solution or float(user_text) == cheatAns:
+        if cheatAns: # Check if cheat code is enabled
+            # check the answer, plus the cheat code
+            if float(user_text) == cheatAns or float(user_text) == solution:
+                return True
+            else:
+                return False
+        elif float(user_text) == solution: # check the answer
             return True
         else:
             return False

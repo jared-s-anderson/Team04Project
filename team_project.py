@@ -74,8 +74,8 @@ base_font = pygame.font.Font(None, 32)
 
 # create a text surface object,
 # on which text is drawn.
-question = question(level)
-text = font.render(question[0], True, TEXT_COLOR, TEXT_BACKGROUND)
+curQuestion = question(level)
+text = font.render(curQuestion[0], True, TEXT_COLOR, TEXT_BACKGROUND)
 levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
 
 # Define the empty user text string for user input
@@ -170,18 +170,19 @@ while run:
 
             elif event.key == pygame.K_RETURN:
                 #output = 'Incorrect:'
-                result = checkSolution(user_text, question[1], cheatAns)
+                result = checkSolution(user_text, curQuestion[1], cheatAns)
                 if result:
                     # If correct reset the color, increase the level, 
                     # and rerender the level image.
                     which_color = 1
-                    #output = 'Correct!'
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
                 else:
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
                 user_text = ''
+                curQuestion = question(level)
+                text = font.render(curQuestion[0], True, TEXT_COLOR, TEXT_BACKGROUND)
   
             # Unicode standard is used for string
             # formation
