@@ -2,8 +2,8 @@
 import pygame
 from  CHARACTER_VARIABLES import *
 import os
-from object_finder import ObjectFinder
 from OBJECT_VARIABLES import *
+import object_finder
 
 class Character(pygame.sprite.Sprite):
     def __init__(self, picture, w, h, v):
@@ -67,25 +67,16 @@ class Character(pygame.sprite.Sprite):
         self.right = False
         self.up = False
         self.down = False
+
         
         if key[pygame.K_LEFT] and (self.rect.x > self.velocity): 
             self.left = True
-            # Check if character is at the same height as object
-            if (self.rect.y in range(other.rect.top, other.rect.bottom + other.height - 15)):
-                if (self.rect.x < other.rect.left + 20) or (self.rect.x > other.rect.right + 20):
-                    self.rect = self.rect.move(-self.velocity, 0)
-                else:
-                    return 
+            
             self.rect = self.rect.move(-self.velocity, 0)
 
         elif key[pygame.K_RIGHT] and (self.rect.x  < 1315 - self.width - self.velocity):
             self.right = True
-            # Check if character is at the same height as object
-            if (self.rect.y in range(other.rect.top, other.rect.bottom + other.height - 15)):
-                if (self.rect.x < other.rect.left - 20) or (self.rect.x > other.rect.right):
-                    self.rect = self.rect.move(self.velocity, 0)
-                else:
-                    return 
+            
             self.rect = self.rect.move(self.velocity, 0)
 
         elif key[pygame.K_UP] and (self.rect.y > self.velocity):

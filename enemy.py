@@ -40,3 +40,9 @@ class Enemy(Character):
             self.index = 0
         self.image = self.image_list[self.index].convert_alpha()
         self.index += 1
+
+    def update(self,red):
+        delta_x = red.rect.x - self.rect.x
+        delta_y = red.rect.y - self.rect.y
+
+        self.rect = self.rect.move(self.velocity + delta_x / 10, delta_y / 10)

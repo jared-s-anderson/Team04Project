@@ -2,7 +2,6 @@ import pygame
 #from pygame import sprite
 from boss import Boss
 from enemy import Enemy
-from object_finder import ObjectFinder
 from stats import Stats
 from pygame.draw import rect
 from character import Character
@@ -10,6 +9,9 @@ from randQuestion import question, checkSolution
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
+from gmaeData import level01
+import math
+import random
 
 pygame.init()
 # Set the window
@@ -202,9 +204,16 @@ while run:
  
     # Red
     red.update(key, hydra)
+    eye.update(red)
+    goblin.update(red)
+    mushroom.update(red)
+    skeleton.update(red)
+    hydra.update(red)
     red.draw()
 
     # Eye
+
+    # try to get enemy to chase player
     eye.draw()
 
     # Goblin
