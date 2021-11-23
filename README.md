@@ -1,13 +1,15 @@
 # Team04Project
 ## Overview
 
-This repository is a simple JRPG written in python using the Pygame library.
+This repository is a simple math JRPG written in python using the Pygame library.
 
 [Software Demo Video]()
 
 ## Development Environment
 
 This program was coded in VScode with various extensions including the Microsoft Python extension and Pygame. It was written in the Python programming language using version 3.9.1.
+
+An auomatically correct awnswer can be set by setting cheatAns in GAME_VARIABLES to an integer. It can be disabled by setting to 0. Likewise you can set your starting level with the level variable.
 
 ### Additional libraries
 * random

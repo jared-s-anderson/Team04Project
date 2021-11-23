@@ -41,7 +41,7 @@ class Enemy(Character):
         self.image = self.image_list[self.index].convert_alpha()
         self.index += 1
 
-    def update(self,red, sight):
+    def update(self, red, sight):
         delta_x = red.rect.x - self.rect.x # Not the distance apart, its which is closer to origin.
         delta_y = red.rect.y - self.rect.y # You would have to take the abs value of both to get the distance apart.
 
