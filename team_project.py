@@ -12,6 +12,11 @@ from GAME_VARIABLES import *
 from gmaeData import level01
 import math
 import random
+from pytmx.util_pygame import load_pygame
+import pytmx
+import os
+
+
 
 pygame.init()
 # Set the window
@@ -19,7 +24,16 @@ win = pygame.display.set_mode((X, Y))
 # Set the window name
 pygame.display.set_caption(gameName)
 # Set the scene and its dimensions.
-bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
+#bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
+
+#******** tmx stuff *************
+tmxdata = load_pygame("/Volumes/T7/untitled folder/School/Fall_2021/cse310/team04Project/Team04Project/levels/Cave.tmx")
+for layer in tmxdata:
+    for tile in layer.tiles():
+        x_pixel = tile[0] * 12
+        y_pixel = tile[1] * 12
+        win.blit(tile[2], (x_pixel, y_pixel))
+
 
 #Set sounds by scene
 sounds(scene, volume)
@@ -87,11 +101,9 @@ user_text = ''
 input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 
 #####################################################
-
+eye_stats.damage_left -= 10
 
 i = 0
-
-
 
 # Set up the game window
 def gameWindow():
@@ -108,6 +120,7 @@ def gameWindow():
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
     hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
+    
     eye_stats.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
     goblin_stats.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
     mushroom_stats.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
@@ -214,6 +227,7 @@ while run:
     # Eye
 
     # try to get enemy to chase player
+    
     eye.draw()
 
     # Goblin
