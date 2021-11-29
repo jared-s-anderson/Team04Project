@@ -12,6 +12,10 @@ from GAME_VARIABLES import *
 from gmaeData import level01
 import math
 import random
+from pytmx.util_pygame import load_pygame
+import pytmx
+import os
+
 
 pygame.init()
 # Set the window
@@ -27,13 +31,15 @@ sounds(scene, volume)
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
+red.rect.update(200, 50, RED_WIDTH, RED_HEIGHT)
+
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
 
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT)
-hydra.rect.update(200, 50, HYDRA_WIDTH, HYDRA_HEIGHT)
+hydra.rect.update(200, 200, HYDRA_WIDTH, HYDRA_HEIGHT)
 hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_boss", "Hydra")
 hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
@@ -87,27 +93,52 @@ user_text = ''
 input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 
 #####################################################
-
+eye_stats.damage_left -= 10
 
 i = 0
+all_tiles = []
+tmx_data = load_pygame("Cave.tmx")
+props = tmx_data.get_tile_properties_by_layer(1)
+boundry_rects = []
+for tile in tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 6
+        y_pixel = tile[1] * 6   
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 12, 12) 
+        boundry_rects.append(curr_rect)      
 
+# set up the boundries:
+left = []
+right = []
+top = []
+down = []  
 
-
+# for r in boundry_rects:
+#     left.append(r.right)
+#     right.append(r.left)
+#     top.append(r.bottom)
+#     down.append(r.top)
+   
 # Set up the game window
 def gameWindow():
-    
     global i
-    
     if i >= 38:
         i = 0
+    win.fill((0,0,0))
+    for tile in tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 6
+        y_pixel = tile[1] * 6   
+        win.blit(tile[2], (x_pixel, y_pixel))
+    for tile in tmx_data.get_layer_by_name("Tile Layer 2").tiles():
+        x_pixel = tile[0] * 6
+        y_pixel = tile[1] * 6   
+        win.blit(tile[2], (x_pixel, y_pixel))
 
-    win.fill((0, 0, 0))
-    win.blit(bg, (0,0))
-    
+
     sprite_group.draw(win)
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
     hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
+    
     eye_stats.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
     goblin_stats.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
     mushroom_stats.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
@@ -203,7 +234,13 @@ while run:
     # Update Character by sending a bunch of key button states as bools
  
     # Red
-    red.update(key, hydra)
+    red.update(key, hydra, boundry_rects)
+            
+    eye.update(red)
+    goblin.update(red)
+    mushroom.update(red)
+    skeleton.update(red)
+    hydra.update(red)
     red.draw()
 
     # Enemy movement
@@ -217,6 +254,7 @@ while run:
     # Eye
 
     # try to get enemy to chase player
+
     eye.draw()
 
     # Goblin

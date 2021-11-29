@@ -58,7 +58,7 @@ class Character(pygame.sprite.Sprite):
             elif "down" in file:
                 self.move_down.append(pygame.image.load(f"images/{folder_name}/{file}").convert_alpha())
 
-    def update(self, key, other):
+    def update(self, key, other, b_list):
         '''
         method that has the character move according to the {key} that was pressed
 
@@ -68,7 +68,6 @@ class Character(pygame.sprite.Sprite):
         self.up = False
         self.down = False
 
-        
         if key[pygame.K_LEFT] and (self.rect.x > self.velocity): 
             self.left = True
             
