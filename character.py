@@ -67,22 +67,49 @@ class Character(pygame.sprite.Sprite):
         self.right = False
         self.up = False
         self.down = False
+
         if key[pygame.K_LEFT] and (self.rect.x > self.velocity): 
+            # Set animation 
             self.left = True
-            
+            # Check boundry collision 
+            if self.rect.collidelist(b_list) != -1:
+                # Let character move mack right into the map, away from boundry
+                self.rect = self.rect.move(self.velocity, 0)
+                return
+            # Move character left 
             self.rect = self.rect.move(-self.velocity, 0)
 
         elif key[pygame.K_RIGHT] and (self.rect.x  < 1315 - self.width - self.velocity):
+            # Set animation
             self.right = True
-            
+            # Check boundry collision
+            if self.rect.collidelist(b_list) != -1:
+                # Let character move back left into the map, away from boundry
+                self.rect = self.rect.move(-self.velocity, 0)
+                return
+            # Move character right
             self.rect = self.rect.move(self.velocity, 0)
 
         elif key[pygame.K_UP] and (self.rect.y > self.velocity):
+            # Set animation
             self.up = True
+            # Check boundry collision
+            if self.rect.collidelist(b_list) != -1:
+                # Let character move back down into the map, away from boundry
+                self.rect = self.rect.move(0, self.velocity)
+                return
+            # Move character up
             self.rect = self.rect.move(0, -self.velocity)
             
         elif key[pygame.K_DOWN] and (self.rect.y < 675 - self.width - self.velocity):
+            # Set animation
             self.down = True
+            # Check boundry collision
+            if self.rect.collidelist(b_list) != -1:
+                # Let character move back up into the map, away from boundry
+                self.rect = self.rect.move(0, -self.velocity)
+                return
+            # Move character down
             self.rect = self.rect.move(0, self.velocity)
 
     def draw(self):

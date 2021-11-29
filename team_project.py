@@ -100,40 +100,25 @@ i = 0
 cave_tmx_data = load_pygame("Cave.tmx")
 overworld_tmx_data = load_pygame("Overworld_tiled.tmx")
 
-boundry_rects = []
+cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
-        x_pixel = tile[0] * 6
-        y_pixel = tile[1] * 6   
-        curr_rect = pygame.Rect(x_pixel, y_pixel, 12, 12) 
-        boundry_rects.append(curr_rect)
+        x_pixel = tile[0] * 8
+        y_pixel = tile[1] * 8
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        cave_boundry_rects.append(curr_rect)
+        #pygame.draw.rect(win, (0, 250, 0), curr_rect)
 
-
-
-# set up the boundries:
-left = []
-right = []
-top = []
-down = []  
-
-# for r in boundry_rects:
-#     left.append(r.right)
-#     right.append(r.left)
-#     top.append(r.bottom)
-#     down.append(r.top)
-   
 # Set up the game window
 def gameWindow():
     global i
     if i >= 38:
         i = 0
     win.fill((0,0,0))
-    for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10   
-        win.blit(tile[2], (x_pixel, y_pixel))
-    for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 2").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10  
+    
+    # Draw all tiles for Cave map
+    for tile in cave_tmx_data.get_layer_by_name("Tile Layer 2").tiles():
+        x_pixel = tile[0] * 8
+        y_pixel = tile[1] * 8
         win.blit(tile[2], (x_pixel, y_pixel))
 
 
@@ -238,7 +223,7 @@ while run:
     # Update Character by sending a bunch of key button states as bools
  
     # Red
-    red.update(key, hydra, boundry_rects)
+    red.update(key, hydra, cave_boundry_rects)
             
     red.draw()
 
