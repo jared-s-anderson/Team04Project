@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="250" height="150" tilewidth="12" tileheight="12" infinite="0" nextlayerid="3" nextobjectid="1">
  <tileset firstgid="1" name="boundries" tilewidth="12" tileheight="12" tilecount="20790" columns="198">
-  <image source="../../../Volumes/T7/untitled folder/School/Fall_2021/cse310/team04Project/Team04Project/images/Cave01.jpg" width="2380" height="1260"/>
+  <image source="./images/Cave01.jpg" width="2380" height="1260"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="250" height="150" opacity="0.84">
   <data encoding="csv">
