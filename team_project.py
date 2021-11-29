@@ -17,7 +17,6 @@ import pytmx
 import os
 
 
-
 pygame.init()
 # Set the window
 win = pygame.display.set_mode((X, Y))
@@ -244,10 +243,18 @@ while run:
     hydra.update(red)
     red.draw()
 
+    # Enemy movement
+    eye.update(red, EYE_SIGHT)
+    goblin.update(red, GOBLIN_SIGHT)
+    mushroom.update(red, MUSHROOM_SIGHT)
+    skeleton.update(red, SKELETON_SIGHT)
+    hydra.update(red)
+    
+
     # Eye
 
     # try to get enemy to chase player
-    
+
     eye.draw()
 
     # Goblin

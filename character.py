@@ -67,10 +67,7 @@ class Character(pygame.sprite.Sprite):
         self.right = False
         self.up = False
         self.down = False
-        # print(self.rect.collidelist(b_list))
-        # if self.rect.collidelist(b_list) > -1:
-        #     self.rect = self.rect.move(self.velocity, 0)
-        #     return 
+
         if key[pygame.K_LEFT] and (self.rect.x > self.velocity): 
             self.left = True
             
