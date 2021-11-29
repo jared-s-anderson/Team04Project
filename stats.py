@@ -12,6 +12,7 @@ class Stats:
         self.damage_power = 0
         self.abilities = character.abilities
         self.damage_left = 50
+        self.alive = True
 
     def set_health(self):
         '''
@@ -66,18 +67,17 @@ class Stats:
         Displays the characters health bar
         
         '''
-        GREEN_LEFT = 0
-        TOP = 0
-        WIDTH = 50
-        HEIGHT = 8
+        if self.alive:
+            GREEN_LEFT = 0
+            TOP = 0
+            WIDTH = 50
+            HEIGHT = 8
 
-        health_bar = pygame.Surface((WIDTH, HEIGHT))
-        health_bar.fill(pygame.Color("green"), (GREEN_LEFT, TOP, WIDTH, HEIGHT))
-        health_bar.fill(pygame.Color("red"), (self.damage_left, TOP, WIDTH, HEIGHT))
+            health_bar = pygame.Surface((WIDTH, HEIGHT))
+            health_bar.fill(pygame.Color("green"), (GREEN_LEFT, TOP, WIDTH, HEIGHT))
+            health_bar.fill(pygame.Color("red"), (self.damage_left, TOP, WIDTH, HEIGHT))
 
-        win.blit(health_bar, (x - 10, y - 20))
-
-        pass
+            win.blit(health_bar, (x - 10, y - 20))
 
     def show_abilities(self):
         '''

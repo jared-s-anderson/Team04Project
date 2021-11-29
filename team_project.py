@@ -9,9 +9,12 @@ from randQuestion import question, checkSolution
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
-from gmaeData import level01
 import math
 import random
+from pytmx.util_pygame import load_pygame
+import pytmx
+import os
+
 
 pygame.init()
 # Set the window
@@ -27,13 +30,15 @@ sounds(scene, volume)
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
+red.rect.update(200, 100, RED_WIDTH, RED_HEIGHT)
+
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
 
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT)
-hydra.rect.update(200, 50, HYDRA_WIDTH, HYDRA_HEIGHT)
+hydra.rect.update(200, 200, HYDRA_WIDTH, HYDRA_HEIGHT)
 hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_boss", "Hydra")
 hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
@@ -91,19 +96,47 @@ input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 
 i = 0
 
+# Collisions
+cave_tmx_data = load_pygame("Cave.tmx")
+overworld_tmx_data = load_pygame("Overworld_tiled.tmx")
+
+boundry_rects = []
+for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 6
+        y_pixel = tile[1] * 6   
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 12, 12) 
+        boundry_rects.append(curr_rect)
 
 
+
+# set up the boundries:
+left = []
+right = []
+top = []
+down = []  
+
+# for r in boundry_rects:
+#     left.append(r.right)
+#     right.append(r.left)
+#     top.append(r.bottom)
+#     down.append(r.top)
+   
 # Set up the game window
 def gameWindow():
-    
     global i
-    
     if i >= 38:
         i = 0
+    win.fill((0,0,0))
+    for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10   
+        win.blit(tile[2], (x_pixel, y_pixel))
+    for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 2").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10  
+        win.blit(tile[2], (x_pixel, y_pixel))
 
-    win.fill((0, 0, 0))
-    win.blit(bg, (0,0))
-    
+
     sprite_group.draw(win)
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
@@ -176,9 +209,11 @@ while run:
                 if result:
                     # If correct reset the color, increase the level, 
                     # and rerender the level image.
+                    # and decrease enemy health
                     which_color = 1
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
+                    eye_stats.damage_left -= 10
                 else:
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
@@ -203,9 +238,8 @@ while run:
     # Update Character by sending a bunch of key button states as bools
  
     # Red
-    red.update(key, hydra)
-  
-    hydra.update(red)
+    red.update(key, hydra, boundry_rects)
+            
     red.draw()
 
     # Enemy movement
@@ -217,9 +251,12 @@ while run:
     
 
     # Eye
-
-    # try to get enemy to chase player
+    if eye_stats.damage_left == 0:
+        eye.kill()
+        eye_stats.alive = False
     eye.draw()
+    
+
 
     # Goblin
     goblin.draw()
