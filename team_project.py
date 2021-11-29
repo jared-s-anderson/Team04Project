@@ -204,12 +204,17 @@ while run:
  
     # Red
     red.update(key, hydra)
-    eye.update(red)
-    goblin.update(red)
-    mushroom.update(red)
-    skeleton.update(red)
+  
     hydra.update(red)
     red.draw()
+
+    # Enemy movement
+    eye.update(red, EYE_SIGHT)
+    goblin.update(red, GOBLIN_SIGHT)
+    mushroom.update(red, MUSHROOM_SIGHT)
+    skeleton.update(red, SKELETON_SIGHT)
+    hydra.update(red)
+    
 
     # Eye
 
