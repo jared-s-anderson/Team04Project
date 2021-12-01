@@ -15,8 +15,6 @@ from pytmx.util_pygame import load_pygame
 import pytmx
 import os
 
-PATH = os.path.dirname(os.path.abspath(__file__))
-
 pygame.init()
 # Set the window
 win = pygame.display.set_mode((X, Y))
@@ -97,9 +95,8 @@ input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 i = 0
 
 # Collisions
-print(PATH + "/levels/Cave.tmx")
-cave_tmx_data = load_pygame(PATH + "\\levels\\Cave.tmx")
-overworld_tmx_data = pytmx.load_pygame("levels\\Overworld.tmx")
+cave_tmx_data = load_pygame("levels/Cave.tmx")
+overworld_tmx_data = pytmx.load_pygame("levels/Overworld.tmx")
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
