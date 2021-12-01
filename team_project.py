@@ -30,7 +30,7 @@ sounds(scene, volume)
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
-red.rect.update(200, 100, RED_WIDTH, RED_HEIGHT)
+red.rect.update(150, 100, RED_WIDTH, RED_HEIGHT)
 
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
@@ -120,7 +120,6 @@ def gameWindow():
         x_pixel = tile[0] * 8
         y_pixel = tile[1] * 8
         win.blit(tile[2], (x_pixel, y_pixel))
-
 
     sprite_group.draw(win)
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
@@ -233,7 +232,6 @@ while run:
     mushroom.update(red, MUSHROOM_SIGHT)
     skeleton.update(red, SKELETON_SIGHT)
     hydra.update(red)
-    
 
     # Eye
     if eye_stats.damage_left == 0:
@@ -241,8 +239,6 @@ while run:
         eye_stats.alive = False
     eye.draw()
     
-
-
     # Goblin
     goblin.draw()
 

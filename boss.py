@@ -42,7 +42,8 @@ class Boss(Character):
             self.standing_animation.append(pygame.image.load(f"images/{folder_name}/{character_name}_{i}.png").convert_alpha())
 
     def update(self,red):
-        delta_x = red.rect.x - self.rect.x
-        delta_y = red.rect.y - self.rect.y
+        pass
+        # delta_x = red.rect.x - self.rect.x
+        # delta_y = red.rect.y - self.rect.y
 
-        self.rect = self.rect.move(delta_x / 20, delta_y / 20)
+        # self.rect = self.rect.move(delta_x / 20, delta_y / 20)
