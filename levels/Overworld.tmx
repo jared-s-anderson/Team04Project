@@ -4,10 +4,10 @@
   <export target="Overworld_tiled..csv" format="csv"/>
  </editorsettings>
  <tileset firstgid="1" name="overworld_boundries" tilewidth="12" tileheight="12" tilecount="7424" columns="128">
-  <image source="../../../Volumes/T7/untitled folder/School/Fall_2021/cse310/team04Project/Team04Project/images/OverworldMap(22x10).png" width="1540" height="700"/>
+  <image source="../images/OverworldMap(22x10).png" width="1540" height="700"/>
  </tileset>
  <tileset firstgid="7425" name="boundries" tilewidth="12" tileheight="12" tilecount="20790" columns="198">
-  <image source="../../../Volumes/T7/untitled folder/School/Fall_2021/cse310/team04Project/Team04Project/images/Cave01.jpg" width="2380" height="1260"/>
+  <image source="../images/Cave01.jpg" width="2380" height="1260"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="150" height="100">
   <data encoding="csv">
