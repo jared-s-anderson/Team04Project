@@ -4,11 +4,13 @@ Y = 650 #-AD 650 default 760
 gameName = "The Legend of the Red Rectangle"
 level = 1 # Here is the cheat to set your own level
 cheatAns = 42 # This lets you set a cheat answer - can be disabled by setting to 0
-defaultScene = 'images/OverworldMap(22x10).png'
+
+# Scene Set
+scene = 'overworld'
 
 # Sound settings
 volume = 0.7
-scene = 'hydra'
+
 
 # Text
 TEXT_X = X//2
