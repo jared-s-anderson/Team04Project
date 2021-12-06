@@ -11,7 +11,6 @@ scene = 'overworld'
 # Sound settings
 volume = 0.7
 
-
 # Text
 TEXT_X = X//2
 TEXT_Y = Y//15
@@ -23,8 +22,8 @@ INPUT_X = X//3
 INPUT_Y = Y//1.2
 INPUT_WIDTH = X//3 #140
 INPUT_HIGHT = 32
-INPUT_COLOR_ACTIVE = (61, 58, 58) # Dark grey
-INPUT_COLOR_PASSIVE = (74, 70, 70) # Light grey
+INPUT_COLOR_ACTIVE =  (74, 70, 70) # Light grey
+INPUT_COLOR_PASSIVE = (61, 58, 58) # Dark grey
 INPUT_COLOR_WRONG = (181, 20, 5) # Bright red
 
 # Level text
