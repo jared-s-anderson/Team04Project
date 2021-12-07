@@ -1,4 +1,5 @@
 import pygame
+from pygame.image import load
 #from pygame import sprite
 from boss import Boss
 from enemy import Enemy
@@ -7,14 +8,26 @@ from pygame.draw import rect
 from character import Character
 from randQuestion import question, checkSolution
 from sound import sounds
+from scene import setScene
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
+import math
+import random
+import pytmx
 from pytmx.util_pygame import load_pygame
+import os
 
+pygame.init()
+# Set the window
+win = pygame.display.set_mode((X, Y))
+# Set the window name
+pygame.display.set_caption(gameName)
+# Set the scene and its dimensions.
+#bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
 
 pygame.init()
 #Set sounds by scene
-sounds(scene, volume)
+#sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
@@ -87,6 +100,7 @@ i = 0
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
 overworld_tmx_data = load_pygame("levels/Overworld.tmx")
+#boss_room_data = load_pygame("levels/boss_room.tmx")
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
@@ -105,26 +119,19 @@ def gameWindow():
         i = 0
     win.fill((0,0,0))
     
-    # Draw all tiles for Cave map
-    for tile in bg_tiled.get_layer_by_name("Tile Layer 1").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10
-        win.blit(tile[2], (x_pixel, y_pixel))
-    for tile in bg_tiled.get_layer_by_name("Tile Layer 2").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10
-        win.blit(tile[2], (x_pixel, y_pixel))
+    setScene(win, scene, cave_tmx_data, overworld_tmx_data)
 
+    # Find the closet enemy to deal damage to
     
 
     sprite_group.draw(win)
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
     hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
-    eye_stats.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
-    goblin_stats.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
-    mushroom_stats.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
-    skeleton_stats.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
+    goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
+    mushroom.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
+    skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
 
     i += 1
 
@@ -160,6 +167,23 @@ which_color = 0
 
 # This loop runs the game.
 while run:
+
+    enemy_list = []
+    enemy_list.append(eye)
+    enemy_list.append(goblin)
+    enemy_list.append(mushroom)
+    enemy_list.append(skeleton)
+    distance_by_enemy = []
+
+    for enemy in enemy_list:
+        distance = red.rect.x - enemy.rect.x
+        distance_by_enemy.append((enemy, abs(distance)))
+    global closest    
+    closest = (None, 10000)
+    for enemy, distance in distance_by_enemy:
+        if abs(distance) < closest[1]:
+            closest = (enemy, distance)
+
     pygame.time.delay(100)
 
     # Get the key pressed from user
@@ -193,7 +217,11 @@ while run:
                     which_color = 1
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
-                    eye_stats.damage_left -= 10
+                    closest[0].damage_left -= 10
+                    if closest[0].damage_left == 0:
+                        print("closest:", closest, distance_by_enemy)
+                        distance_by_enemy.remove(closest)
+                        
                 else:
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
@@ -231,19 +259,30 @@ while run:
     skeleton.update(red, SKELETON_SIGHT)
     hydra.update(red)
 
+        
+
     # Eye
-    if eye_stats.damage_left == 0:
+    if eye.damage_left == 0:
         eye.kill()
-        eye_stats.alive = False
+        eye.alive = False
     eye.draw()
     
     # Goblin
+    if goblin.damage_left == 0:
+        goblin.kill()
+        goblin.alive = False
     goblin.draw()
 
     # Mushroom
+    if mushroom.damage_left == 0:
+        mushroom.kill()
+        mushroom.alive = False
     mushroom.draw()
 
     # Skeleton
+    if skeleton.damage_left == 0:
+        skeleton.kill()
+        skeleton.alive = False
     skeleton.draw()
 
     # call the game window elements

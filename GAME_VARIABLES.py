@@ -1,20 +1,17 @@
 from pytmx.util_pygame import load_pygame
-import pygame
-
 # General use variables
 X = 1280 
 Y = 650 #-AD 650 default 760
 gameName = "The Legend of the Red Rectangle"
 level = 1 # Here is the cheat to set your own level
 cheatAns = 42 # This lets you set a cheat answer - can be disabled by setting to 0
+damage_enemy = False
 
-# Set the window and background tiled file that will be used
-win = pygame.display.set_mode((X, Y))
-bg_tiled = load_pygame("levels/overworld.tmx")
+# Scene Set
+scene = 'cave'
 
 # Sound settings
 volume = 0.7
-scene = 'hydra'
 
 # Text
 TEXT_X = X//2
@@ -27,8 +24,8 @@ INPUT_X = X//3
 INPUT_Y = Y//1.2
 INPUT_WIDTH = X//3 #140
 INPUT_HIGHT = 32
-INPUT_COLOR_ACTIVE = (61, 58, 58) # Dark grey
-INPUT_COLOR_PASSIVE = (74, 70, 70) # Light grey
+INPUT_COLOR_ACTIVE =  (74, 70, 70) # Light grey
+INPUT_COLOR_PASSIVE = (61, 58, 58) # Dark grey
 INPUT_COLOR_WRONG = (181, 20, 5) # Bright red
 
 # Level text
