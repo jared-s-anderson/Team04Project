@@ -125,7 +125,7 @@ def gameWindow():
     
 
     sprite_group.draw(win)
-    red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
+    red.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
     hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
     eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
@@ -223,6 +223,10 @@ while run:
                         distance_by_enemy.remove(closest)
                         
                 else:
+                    red.damage_left -= 10
+                    if red.damage_left == 0:
+                        red.kill()
+                        red.alive = False
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
                 user_text = ''

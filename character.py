@@ -19,6 +19,7 @@ class Character(pygame.sprite.Sprite):
         self.height = h
         self.velocity = v
         self.abilities = []
+        self.damage_left = 50
     
         # Animation attributes
         self.move_right = []
@@ -130,3 +131,21 @@ class Character(pygame.sprite.Sprite):
         elif self.down:
             self.image = self.move_down[self.index].convert_alpha()
             self.index += 1
+
+    def show_health_bar(self, win, x, y):
+        '''
+        Displays the characters health bar
+        
+        '''
+        if self.alive:
+            GREEN_LEFT = 0
+            TOP = 0
+            WIDTH = 50
+            HEIGHT = 8
+
+            health_bar = pygame.Surface((WIDTH, HEIGHT))
+            health_bar.fill(pygame.Color("green"), (GREEN_LEFT, TOP, WIDTH, HEIGHT))
+            health_bar.fill(pygame.Color("red"), (self.damage_left, TOP, WIDTH, HEIGHT))
+
+            win.blit(health_bar, (x - 10, y - 20))
+        
