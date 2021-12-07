@@ -11,7 +11,7 @@ class Enemy(Character):
         #self.image = picture.convert()
         #self.rect = self.image.get_rect()
         #self.index = 0
-
+    """
     def follow_player(self, character):
         x, y = character.rect.x - self.rect.x, character.rect.x - self.rect.y
         distance = math.hypot(x, y)
@@ -24,7 +24,7 @@ class Enemy(Character):
         dirvect.normalize()
         dirvect.scale_to_length(self.velocity)
         self.rect.move_ip(dirvect)
-
+    """
     def movement_setup(self, folder_name):
 
         # self.enemy_name = enemy_name

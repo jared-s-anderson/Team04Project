@@ -11,8 +11,8 @@ from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 import math
 import random
-from pytmx.util_pygame import load_pygame
 import pytmx
+from pytmx.util_pygame import load_pygame
 import os
 
 pygame.init()
@@ -21,7 +21,7 @@ win = pygame.display.set_mode((X, Y))
 # Set the window name
 pygame.display.set_caption(gameName)
 # Set the scene and its dimensions.
-bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
+#bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
 
 #Set sounds by scene
 sounds(scene, volume)
@@ -238,12 +238,21 @@ while run:
     eye.draw()
     
     # Goblin
+    if goblin_stats.damage_left == 0:
+        goblin.kill()
+        goblin_stats.alive = False
     goblin.draw()
 
     # Mushroom
+    if mushroom_stats == 0:
+        mushroom.kill()
+        mushroom_stats.alive = False
     mushroom.draw()
 
     # Skeleton
+    if skeleton_stats == 0:
+        skeleton.kill()
+        skeleton_stats.alive = False
     skeleton.draw()
 
     # call the game window elements
