@@ -98,6 +98,7 @@ i = 0
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
 overworld_tmx_data = load_pygame("levels/Overworld.tmx")
+#boss_room_data = load_pygame("levels/boss_room.tmx")
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
@@ -117,7 +118,7 @@ def gameWindow():
     setScene(win, scene, cave_tmx_data, overworld_tmx_data)
 
     sprite_group.draw(win)
-    red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
+    red.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
     hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
     eye_stats.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
@@ -194,6 +195,10 @@ while run:
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
                     damage_enemy = True
                 else:
+                    red.damage_left -= 10
+                    if red.damage_left == 0:
+                        red.kill()
+                        red.alive = False
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
                 user_text = ''
