@@ -9,20 +9,10 @@ from randQuestion import question, checkSolution
 from sound import sounds
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
-import math
-import random
 from pytmx.util_pygame import load_pygame
-import pytmx
-import os
+
 
 pygame.init()
-# Set the window
-win = pygame.display.set_mode((X, Y))
-# Set the window name
-pygame.display.set_caption(gameName)
-# Set the scene and its dimensions.
-bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
-
 #Set sounds by scene
 sounds(scene, volume)
 
@@ -96,7 +86,7 @@ i = 0
 
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
-overworld_tmx_data = pytmx.load_pygame("levels/Overworld.tmx")
+overworld_tmx_data = load_pygame("levels/Overworld.tmx")
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
@@ -107,17 +97,25 @@ for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
         #pygame.draw.rect(win, (0, 250, 0), curr_rect)
 
 # Set up the game window
+
 def gameWindow():
+    
     global i
     if i >= 38:
         i = 0
     win.fill((0,0,0))
     
     # Draw all tiles for Cave map
-    for tile in cave_tmx_data.get_layer_by_name("Tile Layer 2").tiles():
-        x_pixel = tile[0] * 8
-        y_pixel = tile[1] * 8
+    for tile in bg_tiled.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
         win.blit(tile[2], (x_pixel, y_pixel))
+    for tile in bg_tiled.get_layer_by_name("Tile Layer 2").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        win.blit(tile[2], (x_pixel, y_pixel))
+
+    
 
     sprite_group.draw(win)
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
@@ -221,6 +219,8 @@ while run:
  
     # Red
     red.update(key, hydra, cave_boundry_rects)
+    # if red is in transition coordinates:
+    
             
     red.draw()
 
