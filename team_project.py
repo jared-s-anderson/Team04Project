@@ -7,6 +7,7 @@ from pygame.draw import rect
 from character import Character
 from randQuestion import question, checkSolution
 from sound import sounds
+from scene import setScene
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 import math
@@ -24,7 +25,7 @@ pygame.display.set_caption(gameName)
 #bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
 
 #Set sounds by scene
-sounds(scene, volume)
+#sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
@@ -96,7 +97,7 @@ i = 0
 
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
-overworld_tmx_data = pytmx.load_pygame("levels/Overworld.tmx")
+overworld_tmx_data = load_pygame("levels/Overworld.tmx")
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
@@ -113,11 +114,7 @@ def gameWindow():
         i = 0
     win.fill((0,0,0))
     
-    # Draw all tiles for Cave map
-    for tile in cave_tmx_data.get_layer_by_name("Tile Layer 2").tiles():
-        x_pixel = tile[0] * 8
-        y_pixel = tile[1] * 8
-        win.blit(tile[2], (x_pixel, y_pixel))
+    setScene(win, scene, cave_tmx_data, overworld_tmx_data)
 
     sprite_group.draw(win)
     red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
@@ -195,7 +192,7 @@ while run:
                     which_color = 1
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
-                    eye_stats.damage_left -= 10
+                    damage_enemy = True
                 else:
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
@@ -230,6 +227,24 @@ while run:
     mushroom.update(red, MUSHROOM_SIGHT)
     skeleton.update(red, SKELETON_SIGHT)
     hydra.update(red)
+
+    enemy_list = []
+    enemy_list.append(eye)
+    enemy_list.append(goblin)
+    enemy_list.append(mushroom)
+    enemy_list.append(skeleton)
+
+    distance_by_enemy = []
+    for enemy in enemy_list:
+        distance = red.rect.x - enemy.rect.x
+        distance_by_enemy.append((enemy, distance))
+        
+    closest = (None, 10000)
+    for enemy, distance in distance_by_enemy:
+        if abs(distance) < closest[1]:
+            closest = (enemy, abs(distance))
+        
+    print("closest enemy:", closest[0].character_name, closest[1])
 
     # Eye
     if eye_stats.damage_left == 0:
