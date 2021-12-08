@@ -1,4 +1,5 @@
 import pygame
+from pygame import scrap
 from pygame.image import load
 #from pygame import sprite
 from boss import Boss
@@ -97,10 +98,11 @@ input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 
 i = 0
 
+######################################################################
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
 overworld_tmx_data = load_pygame("levels/Overworld.tmx")
-#boss_room_data = load_pygame("levels/boss_room.tmx")
+boss_room_data = load_pygame("levels/boss_room.tmx")
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
@@ -108,22 +110,43 @@ for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
         y_pixel = tile[1] * 8
         curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
         cave_boundry_rects.append(curr_rect)
-        #pygame.draw.rect(win, (0, 250, 0), curr_rect)
+
+cave_transition = []
+for tile in cave_tmx_data.get_layer_by_name("Transition Layer").tiles():
+        x_pixel = tile[0] * 8
+        y_pixel = tile[1] * 8
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        cave_transition.append(curr_rect)
+
+overworld_boundry = []
+for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        overworld_boundry.append(curr_rect)
+
+overworld_transition = []
+for tile in overworld_tmx_data.get_layer_by_name("Transition Layer").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        overworld_transition.append(curr_rect)
+######################################################################
+
+
 
 # Set up the game window
 
 def gameWindow():
-    
     global i
     if i >= 38:
         i = 0
     win.fill((0,0,0))
     
-    setScene(win, scene, cave_tmx_data, overworld_tmx_data)
+    setScene(win, scene, cave_tmx_data, overworld_tmx_data, boss_room_data)
 
     # Find the closet enemy to deal damage to
     
-
     sprite_group.draw(win)
     red.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
@@ -164,21 +187,23 @@ def interface(win, rect, text, levelText, input_rect, user_text, color, base_fon
 
 run = True
 which_color = 0
+enemy_list = []
+enemy_list.append(eye)
+enemy_list.append(goblin)
+enemy_list.append(mushroom)
+enemy_list.append(skeleton)
+
+distance_by_enemy = []
+
+
 
 # This loop runs the game.
 while run:
 
-    enemy_list = []
-    enemy_list.append(eye)
-    enemy_list.append(goblin)
-    enemy_list.append(mushroom)
-    enemy_list.append(skeleton)
-    distance_by_enemy = []
-
     for enemy in enemy_list:
-        distance = red.rect.x - enemy.rect.x
-        distance_by_enemy.append((enemy, abs(distance)))
-    global closest    
+        if enemy.damage_left > 0:
+            distance = red.rect.x - enemy.rect.x
+            distance_by_enemy.append((enemy, abs(distance)))
     closest = (None, 10000)
     for enemy, distance in distance_by_enemy:
         if abs(distance) < closest[1]:
@@ -218,9 +243,6 @@ while run:
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
                     closest[0].damage_left -= 10
-                    if closest[0].damage_left == 0:
-                        print("closest:", closest, distance_by_enemy)
-                        distance_by_enemy.remove(closest)
                         
                 else:
                     red.damage_left -= 10
@@ -250,10 +272,17 @@ while run:
     # Update Character by sending a bunch of key button states as bools
  
     # Red
-    red.update(key, hydra, cave_boundry_rects)
+    print("red", red.rect)
+    print("overworld", overworld_transition)
+    if scene == "overworld":
+        if red.rect.collidelist(overworld_transition) > -1:
+            scene = "cave"
+    elif scene == "cave":
+        if red.rect.collidelist(cave_transition) > -1:
+            scene = "bossRoom"
+    red.update(key, hydra, overworld_boundry)
     # if red is in transition coordinates:
-    
-            
+     
     red.draw()
 
     # Enemy movement
