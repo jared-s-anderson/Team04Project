@@ -22,7 +22,6 @@ win = pygame.display.set_mode((X, Y))
 # Set the window name
 pygame.display.set_caption(gameName)
 # Set the scene and its dimensions.
-#bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
 
 #Set sounds by scene
 sounds(scene, volume)
