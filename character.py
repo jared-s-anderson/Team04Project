@@ -74,7 +74,7 @@ class Character(pygame.sprite.Sprite):
             self.left = True
             # Check boundry collision 
             if self.rect.collidelist(b_list) != -1:
-                # Let character move mack right into the map, away from boundry
+                # Let character move back right into the map, away from boundry
                 self.rect = self.rect.move(self.velocity, 0)
                 return
             # Move character left 
