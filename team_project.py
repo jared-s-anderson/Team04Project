@@ -33,7 +33,7 @@ pygame.init()
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
-red.rect.update(150, 100, RED_WIDTH, RED_HEIGHT)
+red.rect.update(150, 300, RED_WIDTH, RED_HEIGHT)
 
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
@@ -97,7 +97,6 @@ input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 #####################################################
 
 i = 0
-
 ######################################################################
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
@@ -138,12 +137,7 @@ for tile in boss_room_data.get_layer_by_name("Tile Layer 2").tiles():
         y_pixel = tile[1] * 9
         curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
         boss_room_boundry.append(curr_rect)
-
-
-
-
 ######################################################################
-
 
 
 # Set up the game window
@@ -204,32 +198,16 @@ def interface(win, rect, text, levelText, input_rect, user_text, color, base_fon
 
 run = True
 which_color = 0
-enemy_list = []
-enemy_list.append(eye)
-enemy_list.append(goblin)
-enemy_list.append(mushroom)
-enemy_list.append(skeleton)
-
-distance_by_enemy = []
-
 
 
 # This loop runs the game.
 while run:
 
-    for enemy in enemy_list:
-        if enemy.damage_left > 0:
-            distance = red.rect.x - enemy.rect.x
-            distance_by_enemy.append((enemy, abs(distance)))
-    closest = (None, 10000)
-    for enemy, distance in distance_by_enemy:
-        if abs(distance) < closest[1]:
-            closest = (enemy, distance)
-
     pygame.time.delay(100)
 
     # Get the key pressed from user
     key = pygame.key.get_pressed()
+    damage = False
 
     # Quit and controls
     for event in pygame.event.get():
@@ -259,7 +237,8 @@ while run:
                     which_color = 1
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
-                    closest[0].damage_left -= 10
+                    # Player got answer right, can deal damage now
+                    damage = True
                         
                 else:
                     red.damage_left -= 10
@@ -285,9 +264,10 @@ while run:
             color = pygame.Color(INPUT_COLOR_WRONG)
         else:
             print('which_color is invalid!')
-    ######################################################
-    # Update Character by sending a bunch of key button states as bools
- 
+    ###################################################### 
+
+    # Update scenes based off of transition boundries current the scene
+    ###################################################################
     if scene == "overworld":
         red.update(key, hydra, overworld_boundry)
         if red.rect.collidelist(overworld_transition) > -1:
@@ -298,9 +278,9 @@ while run:
             scene = "bossRoom"
     elif scene == "bossRoom":
         red.update(key, hydra, boss_room_boundry)
+    ###################################################################
     
-    # if red is in transition coordinates:
-    
+    # Display red character
     red.draw()
 
     # This places each of the enemies on certain maps.
@@ -316,14 +296,32 @@ while run:
         sprite_group = pygame.sprite.Group(red, hydra)
         hydra.draw()
 
-    # Enemy movement
+    # Deal damage to the closest enemy
+    ##############################################################
+
+    # Get a list of all the current enemies on the map 
+    enemy_list = sprite_group.copy()
+    enemy_list.remove(red)
+
+    distance_by_enemy = []
+    for sprite in enemy_list:
+        if sprite.damage_left > 0:
+            distance = red.rect.x - sprite.rect.x
+            distance_by_enemy.append((sprite, abs(distance)))
+    closest = (None, 10000)
+    for enemy, distance in distance_by_enemy:
+        if abs(distance) < closest[1]:
+            closest = (enemy, distance)
+    if damage:
+        closest[0].damage_left -= 10
+    ################################################################
+
+    # Update Enemy movement
     eye.update(red, EYE_SIGHT)
     goblin.update(red, GOBLIN_SIGHT)
     mushroom.update(red, MUSHROOM_SIGHT)
     skeleton.update(red, SKELETON_SIGHT)
     hydra.update(red)
-
-        
 
     # Eye
     if eye.damage_left == 0:
