@@ -1,5 +1,5 @@
 import pygame
-from pygame import scrap
+from pygame import sprite
 from pygame.image import load
 #from pygame import sprite
 from boss import Boss
@@ -71,7 +71,7 @@ skeleton_stats = Stats(skeleton)
 skeleton.movement_setup("Skeleton")
 skeleton.rect.update(SKELETON_X, SKELETON_Y, SKELETON_WIDTH, SKELETON_HEIGHT)
 
-sprite_group = pygame.sprite.Group(red, hydra, eye, goblin, mushroom, skeleton)
+#sprite_group = pygame.sprite.Group(red, hydra, eye, goblin, mushroom, skeleton)
 #####################################################
  
 # create a font object.
@@ -104,6 +104,20 @@ cave_tmx_data = load_pygame("levels/Cave.tmx")
 overworld_tmx_data = load_pygame("levels/Overworld.tmx")
 boss_room_data = load_pygame("levels/boss_room.tmx")
 
+overworld_boundry = []
+for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        overworld_boundry.append(curr_rect)
+
+overworld_transition = []
+for tile in overworld_tmx_data.get_layer_by_name("Transition Layer").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        overworld_transition.append(curr_rect)
+
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
         x_pixel = tile[0] * 8
@@ -118,19 +132,16 @@ for tile in cave_tmx_data.get_layer_by_name("Transition Layer").tiles():
         curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
         cave_transition.append(curr_rect)
 
-overworld_boundry = []
-for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10
+boss_room_boundry = []
+for tile in boss_room_data.get_layer_by_name("Tile Layer 2").tiles():
+        x_pixel = tile[0] * 9
+        y_pixel = tile[1] * 9
         curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        overworld_boundry.append(curr_rect)
+        boss_room_boundry.append(curr_rect)
 
-overworld_transition = []
-for tile in overworld_tmx_data.get_layer_by_name("Transition Layer").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10
-        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        overworld_transition.append(curr_rect)
+
+
+
 ######################################################################
 
 
@@ -150,11 +161,17 @@ def gameWindow():
     sprite_group.draw(win)
     red.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
-    hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
-    eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
-    goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
-    mushroom.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
-    skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    
+    # This makes sure that health bars are only displayed for certain enemies on different maps.
+    if scene == 'cave':
+        eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
+        mushroom.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
+    elif scene == 'overworld':
+        goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
+        skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    elif scene == 'bossRoom':
+        hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
+
 
     i += 1
 
@@ -271,19 +288,33 @@ while run:
     ######################################################
     # Update Character by sending a bunch of key button states as bools
  
-    # Red
-    print("red", red.rect)
-    print("overworld", overworld_transition)
     if scene == "overworld":
+        red.update(key, hydra, overworld_boundry)
         if red.rect.collidelist(overworld_transition) > -1:
             scene = "cave"
     elif scene == "cave":
+        red.update(key, hydra, cave_boundry_rects)
         if red.rect.collidelist(cave_transition) > -1:
             scene = "bossRoom"
-    red.update(key, hydra, overworld_boundry)
+    elif scene == "bossRoom":
+        red.update(key, hydra, boss_room_boundry)
+    
     # if red is in transition coordinates:
-     
+    
     red.draw()
+
+    # This places each of the enemies on certain maps.
+    if scene == 'cave':
+        sprite_group = pygame.sprite.Group(red, eye, mushroom)
+        eye.draw()
+        mushroom.draw()
+    elif scene == 'overworld':
+        sprite_group = pygame.sprite.Group(red, skeleton, goblin)
+        skeleton.draw()
+        goblin.draw()
+    elif scene == 'bossRoom':
+        sprite_group = pygame.sprite.Group(red, hydra)
+        hydra.draw()
 
     # Enemy movement
     eye.update(red, EYE_SIGHT)
@@ -298,25 +329,21 @@ while run:
     if eye.damage_left == 0:
         eye.kill()
         eye.alive = False
-    eye.draw()
     
     # Goblin
     if goblin.damage_left == 0:
         goblin.kill()
         goblin.alive = False
-    goblin.draw()
 
     # Mushroom
     if mushroom.damage_left == 0:
         mushroom.kill()
         mushroom.alive = False
-    mushroom.draw()
 
     # Skeleton
     if skeleton.damage_left == 0:
         skeleton.kill()
         skeleton.alive = False
-    skeleton.draw()
 
     # call the game window elements
     gameWindow()
