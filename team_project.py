@@ -41,7 +41,7 @@ red.movement_setup("Red_sprite", "red")
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT)
-hydra.rect.update(200, 200, HYDRA_WIDTH, HYDRA_HEIGHT)
+hydra.rect.update(650, 90, HYDRA_WIDTH, HYDRA_HEIGHT)
 hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_boss", "Hydra")
 hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
@@ -273,10 +273,12 @@ while run:
     if scene == "overworld":
         red.update(key, hydra, overworld_boundry)
         if red.rect.collidelist(overworld_transition) > -1:
+            red.rect.update(1250, 300, RED_WIDTH, RED_HEIGHT)
             scene = "cave"
     elif scene == "cave":
         red.update(key, hydra, cave_boundry_rects)
         if red.rect.collidelist(cave_transition) > -1:
+            red.rect.update(700, 500, RED_WIDTH, RED_HEIGHT)
             scene = "bossRoom"
     elif scene == "bossRoom":
         red.update(key, hydra, boss_room_boundry)
