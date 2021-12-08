@@ -1,3 +1,5 @@
+from pygame import draw
+
 def setScene(win, scene, cave_tmx_data, overworld_tmx_data):
     if scene == 'overworld':
         # Draw all tiles for the Overworld map

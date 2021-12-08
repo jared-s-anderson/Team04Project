@@ -1,4 +1,5 @@
 import pygame
+from pygame import sprite
 from pygame.image import load
 #from pygame import sprite
 from boss import Boss
@@ -70,7 +71,7 @@ skeleton_stats = Stats(skeleton)
 skeleton.movement_setup("Skeleton")
 skeleton.rect.update(SKELETON_X, SKELETON_Y, SKELETON_WIDTH, SKELETON_HEIGHT)
 
-sprite_group = pygame.sprite.Group(red, hydra, eye, goblin, mushroom, skeleton)
+#sprite_group = pygame.sprite.Group(red, hydra, eye, goblin, mushroom, skeleton)
 #####################################################
  
 # create a font object.
@@ -127,11 +128,17 @@ def gameWindow():
     sprite_group.draw(win)
     red.show_health_bar(win, red.rect.x, red.rect.y)   
     hydra.showCharacter(win, i)
-    hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
-    eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
-    goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
-    mushroom.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
-    skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    
+    # This makes sure that health bars are only displayed for certain enemies on different maps.
+    if scene == 'cave':
+        eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
+        mushroom.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
+    elif scene == 'overworld':
+        goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
+        skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    elif scene == 'bossRoom':
+        hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
+
 
     i += 1
 
@@ -253,8 +260,20 @@ while run:
     red.update(key, hydra, cave_boundry_rects)
     # if red is in transition coordinates:
     
-            
     red.draw()
+
+    # This places each of the enemies on certain maps.
+    if scene == 'cave':
+        sprite_group = pygame.sprite.Group(red, eye, mushroom)
+        eye.draw()
+        mushroom.draw()
+    elif scene == 'overworld':
+        sprite_group = pygame.sprite.Group(red, skeleton, goblin)
+        skeleton.draw()
+        goblin.draw()
+    elif scene == 'bossRoom':
+        sprite_group = pygame.sprite.Group(red, hydra)
+        hydra.draw()
 
     # Enemy movement
     eye.update(red, EYE_SIGHT)
@@ -269,25 +288,21 @@ while run:
     if eye.damage_left == 0:
         eye.kill()
         eye.alive = False
-    eye.draw()
     
     # Goblin
     if goblin.damage_left == 0:
         goblin.kill()
         goblin.alive = False
-    goblin.draw()
 
     # Mushroom
     if mushroom.damage_left == 0:
         mushroom.kill()
         mushroom.alive = False
-    mushroom.draw()
 
     # Skeleton
     if skeleton.damage_left == 0:
         skeleton.kill()
         skeleton.alive = False
-    skeleton.draw()
 
     # call the game window elements
     gameWindow()

@@ -8,7 +8,7 @@ cheatAns = 42 # This lets you set a cheat answer - can be disabled by setting to
 damage_enemy = False
 
 # Scene Set
-scene = 'cave'
+scene = 'overworld'
 
 # Sound settings
 volume = 0.7
