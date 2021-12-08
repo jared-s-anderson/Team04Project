@@ -142,6 +142,7 @@ for tile in boss_room_data.get_layer_by_name("Tile Layer 2").tiles():
 
 # Set up the game window
 
+i = 0
 def gameWindow():
     global i
     if i >= 38:
@@ -154,7 +155,7 @@ def gameWindow():
     
     sprite_group.draw(win)
     red.show_health_bar(win, red.rect.x, red.rect.y)   
-    hydra.showCharacter(win, i)
+    #hydra.showCharacter(win, i)
     
     # This makes sure that health bars are only displayed for certain enemies on different maps.
     if scene == 'cave':
@@ -164,10 +165,11 @@ def gameWindow():
         goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
         skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
     elif scene == 'bossRoom':
-        hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
-
-
+        hydra.draw(i)
+        hydra.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
     i += 1
+
+    
 
 def interface(win, rect, text, levelText, input_rect, user_text, color, base_font):
 
@@ -284,6 +286,7 @@ while run:
     red.draw()
 
     # This places each of the enemies on certain maps.
+    
     if scene == 'cave':
         sprite_group = pygame.sprite.Group(red, eye, mushroom)
         eye.draw()
@@ -294,8 +297,7 @@ while run:
         goblin.draw()
     elif scene == 'bossRoom':
         sprite_group = pygame.sprite.Group(red, hydra)
-        hydra.draw()
-
+        
     # Deal damage to the closest enemy
     ##############################################################
 
@@ -313,7 +315,10 @@ while run:
         if abs(distance) < closest[1]:
             closest = (enemy, distance)
     if damage:
-        closest[0].damage_left -= 10
+        if closest[0].character_name == "Hydra":
+            closest[0].damage_left -= 5
+        else:
+            closest[0].damage_left -= 10
     ################################################################
 
     # Update Enemy movement
@@ -343,6 +348,11 @@ while run:
         skeleton.kill()
         skeleton.alive = False
 
+    # Hydra
+    if hydra.damage_left == 0:
+        hydra.kill()
+        hydra.alive = False
+    print(hydra.damage_left)
     # call the game window elements
     gameWindow()
     interface(win, rect, text, levelText, input_rect, user_text, color, base_font)

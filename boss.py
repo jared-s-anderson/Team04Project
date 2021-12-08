@@ -1,7 +1,7 @@
-from character import Character
+from enemy import Enemy
 import pygame
 
-class Boss(Character):
+class Boss(Enemy):
     
     def __init__(self, picture, w, h,):
         super().__init__(picture, w, h, 0,)
@@ -19,7 +19,7 @@ class Boss(Character):
         for i in range(1, 12):
             self.standing_animation.append(pygame.image.load(f"images/{folder_name}/{character_name}_{i}.png").convert_alpha())
     
-    def showCharacter(self, win, i):
+    def draw(self, i):
         self.image = self.standing_animation[i]
 
     def special_move_setup(self, folder_name, character_name):
