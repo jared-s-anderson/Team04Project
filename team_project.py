@@ -279,7 +279,7 @@ while run:
     elif scene == "bossRoom":
         red.update(key, hydra, boss_room_boundry)
     ###################################################################
-    
+
     # Display red character
     red.draw()
 
