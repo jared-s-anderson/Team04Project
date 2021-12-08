@@ -3,7 +3,7 @@ from GAME_VARIABLES import *
 # RED character variables
 RED_WIDTH = 30
 RED_HEIGHT = 30
-RED_VELOCITY = 10
+RED_VELOCITY = 15
 RED_X = 50
 RED_Y = 50
 
@@ -18,8 +18,8 @@ HYDRA_Y = Y//2
 EYE_WIDTH = 64
 EYE_HEIGHT = 64
 EYE_VELOCITY = 10
-EYE_X = 300
-EYE_Y = 200
+EYE_X = 200
+EYE_Y = 100
 EYE_SIGHT = 10
 
 # Goblin character variables
@@ -33,9 +33,9 @@ GOBLIN_SIGHT = 10
 # Mushroom character variables
 MUSHROOM_WIDTH = 64
 MUSHROOM_HEIGHT = 64
-MUSHROOM_VELOCITY  = 20
-MUSHROOM_X = 500
-MUSHROOM_Y = 200
+MUSHROOM_VELOCITY  = 10
+MUSHROOM_X = 700
+MUSHROOM_Y = 400
 MUSHROOM_SIGHT = 10
 
 # Skeleton character variables

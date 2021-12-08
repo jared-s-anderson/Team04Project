@@ -1,4 +1,6 @@
 import pygame
+from pygame import sprite
+from pygame.image import load
 #from pygame import sprite
 from boss import Boss
 from enemy import Enemy
@@ -12,8 +14,8 @@ from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
 import math
 import random
-from pytmx.util_pygame import load_pygame
 import pytmx
+from pytmx.util_pygame import load_pygame
 import os
 
 pygame.init()
@@ -23,13 +25,14 @@ win = pygame.display.set_mode((X, Y))
 pygame.display.set_caption(gameName)
 # Set the scene and its dimensions.
 
+pygame.init()
 #Set sounds by scene
-sounds(scene, volume)
+#sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
                 RED_WIDTH, RED_HEIGHT, RED_VELOCITY)
-red.rect.update(150, 100, RED_WIDTH, RED_HEIGHT)
+red.rect.update(150, 300, RED_WIDTH, RED_HEIGHT)
 
 red_stats = Stats(red)
 red.movement_setup("Red_sprite", "red")
@@ -37,7 +40,7 @@ red.movement_setup("Red_sprite", "red")
 # Hydra Character
 hydra = Boss(pygame.image.load("images/Hydra_boss/Hydra_1.png"), 
                 HYDRA_WIDTH, HYDRA_HEIGHT)
-hydra.rect.update(200, 200, HYDRA_WIDTH, HYDRA_HEIGHT)
+hydra.rect.update(650, 90, HYDRA_WIDTH, HYDRA_HEIGHT)
 hydra_stats = Stats(hydra)
 hydra.movement_setup("Hydra_boss", "Hydra")
 hydra.special_move_setup("Hydra_boss/Roar", "Hydra_roar")
@@ -67,7 +70,7 @@ skeleton_stats = Stats(skeleton)
 skeleton.movement_setup("Skeleton")
 skeleton.rect.update(SKELETON_X, SKELETON_Y, SKELETON_WIDTH, SKELETON_HEIGHT)
 
-sprite_group = pygame.sprite.Group(red, hydra, eye, goblin, mushroom, skeleton)
+#sprite_group = pygame.sprite.Group(red, hydra, eye, goblin, mushroom, skeleton)
 #####################################################
  
 # create a font object.
@@ -93,10 +96,25 @@ input_rect = pygame.Rect(INPUT_X, INPUT_Y, INPUT_WIDTH, INPUT_HIGHT)
 #####################################################
 
 i = 0
-
+######################################################################
 # Collisions
 cave_tmx_data = load_pygame("levels/Cave.tmx")
 overworld_tmx_data = load_pygame("levels/Overworld.tmx")
+boss_room_data = load_pygame("levels/boss_room.tmx")
+
+overworld_boundry = []
+for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        overworld_boundry.append(curr_rect)
+
+overworld_transition = []
+for tile in overworld_tmx_data.get_layer_by_name("Transition Layer").tiles():
+        x_pixel = tile[0] * 10
+        y_pixel = tile[1] * 10
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        overworld_transition.append(curr_rect)
 
 cave_boundry_rects = []
 for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
@@ -104,27 +122,53 @@ for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
         y_pixel = tile[1] * 8
         curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
         cave_boundry_rects.append(curr_rect)
-        #pygame.draw.rect(win, (0, 250, 0), curr_rect)
+
+cave_transition = []
+for tile in cave_tmx_data.get_layer_by_name("Transition Layer").tiles():
+        x_pixel = tile[0] * 8
+        y_pixel = tile[1] * 8
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        cave_transition.append(curr_rect)
+
+boss_room_boundry = []
+for tile in boss_room_data.get_layer_by_name("Tile Layer 2").tiles():
+        x_pixel = tile[0] * 9
+        y_pixel = tile[1] * 9
+        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
+        boss_room_boundry.append(curr_rect)
+######################################################################
+
 
 # Set up the game window
+
+i = 0
 def gameWindow():
     global i
     if i >= 38:
         i = 0
     win.fill((0,0,0))
     
-    setScene(win, scene, cave_tmx_data, overworld_tmx_data)
+    setScene(win, scene, cave_tmx_data, overworld_tmx_data, boss_room_data)
 
+    # Find the closet enemy to deal damage to
+    
     sprite_group.draw(win)
-    red_stats.show_health_bar(win, red.rect.x, red.rect.y)   
-    hydra.showCharacter(win, i)
-    hydra_stats.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
-    eye_stats.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
-    goblin_stats.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
-    mushroom_stats.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
-    skeleton_stats.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
-
+    red.show_health_bar(win, red.rect.x, red.rect.y)   
+    #hydra.showCharacter(win, i)
+    
+    # This makes sure that health bars are only displayed for certain enemies on different maps.
+    if scene == 'cave':
+        eye.show_health_bar(win, eye.rect.x + 5, eye.rect.y)
+        mushroom.show_health_bar(win, mushroom.rect.x + 5, mushroom.rect.y)
+    elif scene == 'overworld':
+        goblin.show_health_bar(win, goblin.rect.x  + 5, goblin.rect.y)
+        skeleton.show_health_bar(win, skeleton.rect.x + 15, skeleton.rect.y)
+    elif scene == 'bossRoom':
+        hydra.draw(i)
+        hydra.show_health_bar(win, hydra.rect.x + 35, hydra.rect.y)
     i += 1
+
+    
 
 def interface(win, rect, text, levelText, input_rect, user_text, color, base_font):
 
@@ -156,12 +200,15 @@ def interface(win, rect, text, levelText, input_rect, user_text, color, base_fon
 run = True
 which_color = 0
 
+
 # This loop runs the game.
 while run:
+
     pygame.time.delay(100)
 
     # Get the key pressed from user
     key = pygame.key.get_pressed()
+    damage = False
 
     # Quit and controls
     for event in pygame.event.get():
@@ -191,8 +238,14 @@ while run:
                     which_color = 1
                     level += 1
                     levelText = font.render(str(level), True, LEVEL_COLOR, LEVEL_BACKGROUND)
-                    eye_stats.damage_left -= 10
+                    # Player got answer right, can deal damage now
+                    damage = True
+                        
                 else:
+                    red.damage_left -= 10
+                    if red.damage_left == 0:
+                        red.kill()
+                        red.alive = False
                     which_color = 2
                 #print('{} Your level is: {}'.format(output, level))
                 user_text = ''
@@ -212,15 +265,64 @@ while run:
             color = pygame.Color(INPUT_COLOR_WRONG)
         else:
             print('which_color is invalid!')
-    ######################################################
-    # Update Character by sending a bunch of key button states as bools
- 
-    # Red
-    red.update(key, hydra, cave_boundry_rects)
-            
+    ###################################################### 
+
+    # Update scenes based off of transition boundries current the scene
+    ###################################################################
+    if scene == "overworld":
+        red.update(key, hydra, overworld_boundry)
+        if red.rect.collidelist(overworld_transition) > -1:
+            red.rect.update(1250, 300, RED_WIDTH, RED_HEIGHT)
+            scene = "cave"
+    elif scene == "cave":
+        red.update(key, hydra, cave_boundry_rects)
+        if red.rect.collidelist(cave_transition) > -1:
+            red.rect.update(700, 500, RED_WIDTH, RED_HEIGHT)
+            scene = "bossRoom"
+    elif scene == "bossRoom":
+        red.update(key, hydra, boss_room_boundry)
+    ###################################################################
+
+    # Display red character
     red.draw()
 
-    # Enemy movement
+    # This places each of the enemies on certain maps.
+    
+    if scene == 'cave':
+        sprite_group = pygame.sprite.Group(red, eye, mushroom)
+        eye.draw()
+        mushroom.draw()
+    elif scene == 'overworld':
+        sprite_group = pygame.sprite.Group(red, skeleton, goblin)
+        skeleton.draw()
+        goblin.draw()
+    elif scene == 'bossRoom':
+        sprite_group = pygame.sprite.Group(red, hydra)
+        
+    # Deal damage to the closest enemy
+    ##############################################################
+
+    # Get a list of all the current enemies on the map 
+    enemy_list = sprite_group.copy()
+    enemy_list.remove(red)
+
+    distance_by_enemy = []
+    for sprite in enemy_list:
+        if sprite.damage_left > 0:
+            distance = red.rect.x - sprite.rect.x
+            distance_by_enemy.append((sprite, abs(distance)))
+    closest = (None, 10000)
+    for enemy, distance in distance_by_enemy:
+        if abs(distance) < closest[1]:
+            closest = (enemy, distance)
+    if damage:
+        if closest[0].character_name == "Hydra":
+            closest[0].damage_left -= 5
+        else:
+            closest[0].damage_left -= 10
+    ################################################################
+
+    # Update Enemy movement
     eye.update(red, EYE_SIGHT)
     goblin.update(red, GOBLIN_SIGHT)
     mushroom.update(red, MUSHROOM_SIGHT)
@@ -228,20 +330,30 @@ while run:
     hydra.update(red)
 
     # Eye
-    if eye_stats.damage_left == 0:
+    if eye.damage_left == 0:
         eye.kill()
-        eye_stats.alive = False
-    eye.draw()
+        eye.alive = False
     
     # Goblin
-    goblin.draw()
+    if goblin.damage_left == 0:
+        goblin.kill()
+        goblin.alive = False
 
     # Mushroom
-    mushroom.draw()
+    if mushroom.damage_left == 0:
+        mushroom.kill()
+        mushroom.alive = False
 
     # Skeleton
-    skeleton.draw()
+    if skeleton.damage_left == 0:
+        skeleton.kill()
+        skeleton.alive = False
 
+    # Hydra
+    if hydra.damage_left == 0:
+        hydra.kill()
+        hydra.alive = False
+    print(hydra.damage_left)
     # call the game window elements
     gameWindow()
     interface(win, rect, text, levelText, input_rect, user_text, color, base_font)

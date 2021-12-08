@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.5" tiledversion="1.7.2" orientation="orthogonal" renderorder="right-down" width="150" height="100" tilewidth="12" tileheight="12" infinite="0" nextlayerid="4" nextobjectid="1">
  <tileset firstgid="1" name="boss_room_tileset" tilewidth="12" tileheight="12" tilecount="14355" columns="145">
-  <image source="../../../../../OneDrive/Desktop/git/teamProject/Team04Project/images/BossRoom(25x17).jpg" width="1750" height="1190"/>
+  <image source="../images/cave redo.png" width="1750" height="1190"/>
  </tileset>
  <tileset firstgid="14356" name="cave2" tilewidth="512" tileheight="400" tilecount="1" columns="0">
   <grid orientation="orthogonal" width="1" height="1"/>
