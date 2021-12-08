@@ -12,23 +12,18 @@ from sound import sounds
 from scene import setScene
 from CHARACTER_VARIABLES import *
 from GAME_VARIABLES import *
-import math
-import random
-import pytmx
 from pytmx.util_pygame import load_pygame
-import os
 
 pygame.init()
 # Set the window
 win = pygame.display.set_mode((X, Y))
 # Set the window name
 pygame.display.set_caption(gameName)
-# Set the scene and its dimensions.
-#bg = pygame.transform.scale(pygame.image.load(defaultScene), (X, Y))
 
 pygame.init()
+
 #Set sounds by scene
-#sounds(scene, volume)
+sounds(scene, volume)
 
 # Red Character and Stats and Movement
 red = Character(pygame.image.load('images/Red_sprite/red_right_1.png'),
@@ -103,40 +98,22 @@ cave_tmx_data = load_pygame("levels/Cave.tmx")
 overworld_tmx_data = load_pygame("levels/Overworld.tmx")
 boss_room_data = load_pygame("levels/boss_room.tmx")
 
-overworld_boundry = []
-for tile in overworld_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10
+# Function for creating boundries
+def create_boundry(tmx_data, name, tile_size):
+    boundry_list = []
+    for tile in tmx_data.get_layer_by_name(name).tiles():
+        x_pixel = tile[0] * tile_size
+        y_pixel = tile[1] * tile_size
         curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        overworld_boundry.append(curr_rect)
+        boundry_list.append(curr_rect)
+    return boundry_list
 
-overworld_transition = []
-for tile in overworld_tmx_data.get_layer_by_name("Transition Layer").tiles():
-        x_pixel = tile[0] * 10
-        y_pixel = tile[1] * 10
-        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        overworld_transition.append(curr_rect)
+overworld_boundry = create_boundry(overworld_tmx_data, "Tile Layer 1", 10)
+overworld_transition = create_boundry(overworld_tmx_data, "Transition Layer", 10)
+cave_boundry_rects = create_boundry(cave_tmx_data, "Tile Layer 1", 8)
+cave_transition = create_boundry(cave_tmx_data, "Transition Layer", 8)
+boss_room_boundry = create_boundry(boss_room_data, "Tile Layer 2", 9)
 
-cave_boundry_rects = []
-for tile in cave_tmx_data.get_layer_by_name("Tile Layer 1").tiles():
-        x_pixel = tile[0] * 8
-        y_pixel = tile[1] * 8
-        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        cave_boundry_rects.append(curr_rect)
-
-cave_transition = []
-for tile in cave_tmx_data.get_layer_by_name("Transition Layer").tiles():
-        x_pixel = tile[0] * 8
-        y_pixel = tile[1] * 8
-        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        cave_transition.append(curr_rect)
-
-boss_room_boundry = []
-for tile in boss_room_data.get_layer_by_name("Tile Layer 2").tiles():
-        x_pixel = tile[0] * 9
-        y_pixel = tile[1] * 9
-        curr_rect = pygame.Rect(x_pixel, y_pixel, 2, 2) 
-        boss_room_boundry.append(curr_rect)
 ######################################################################
 
 
@@ -144,6 +121,7 @@ for tile in boss_room_data.get_layer_by_name("Tile Layer 2").tiles():
 
 i = 0
 def gameWindow():
+    
     global i
     if i >= 38:
         i = 0
@@ -361,3 +339,4 @@ while run:
 
 print('Thanks for playing!')    
 pygame.quit()
+

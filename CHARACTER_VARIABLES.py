@@ -3,7 +3,7 @@ from GAME_VARIABLES import *
 # RED character variables
 RED_WIDTH = 30
 RED_HEIGHT = 30
-RED_VELOCITY = 15
+RED_VELOCITY = 12
 RED_X = 50
 RED_Y = 50
 
