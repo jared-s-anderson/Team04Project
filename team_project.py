@@ -271,12 +271,12 @@ while run:
     ###################################################################
     if scene == "overworld":
         red.update(key, hydra, overworld_boundry)
-        if red.rect.collidelist(overworld_transition) > -1:
+        if red.rect.collidelist(overworld_transition) > -1 and level >= 10:
             red.rect.update(1250, 300, RED_WIDTH, RED_HEIGHT)
             scene = "cave"
     elif scene == "cave":
         red.update(key, hydra, cave_boundry_rects)
-        if red.rect.collidelist(cave_transition) > -1:
+        if red.rect.collidelist(cave_transition) > -1 and level >= 20:
             red.rect.update(700, 500, RED_WIDTH, RED_HEIGHT)
             scene = "bossRoom"
     elif scene == "bossRoom":
@@ -353,7 +353,7 @@ while run:
     if hydra.damage_left == 0:
         hydra.kill()
         hydra.alive = False
-    print(hydra.damage_left)
+    #print(hydra.damage_left)
     # call the game window elements
     gameWindow()
     interface(win, rect, text, levelText, input_rect, user_text, color, base_font)

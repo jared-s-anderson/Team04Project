@@ -61,4 +61,5 @@ def checkSolution(user_text, solution, cheatAns):
             if not character.isdigit():
                 #user_text.replace(character, '') Future project to try and sanitize non-digit characters
                 junk += ("'" + character + "' ")
-        return 'Error: Numbers only please!\n{}are/is not valid!'.format(junk)
+        print('Error: Numbers only please!\n{}are/is not valid!'.format(junk))
+        return False
